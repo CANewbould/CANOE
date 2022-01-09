@@ -1,29 +1,32 @@
+--------------------------------------------------------------------------------
 -- io.e
-/*
-
-=Open Euphoria IO library
-
-* Version: 4.0.5.5
-* Author: C A Newbould
-* Date: 2022.01.02
-* Status: incomplete
-* Changes:
-** modified layout
-
-== Library Interface
-
-=== Required modules
-
-*/
-
+--------------------------------------------------------------------------------
+--/*
+--
+--= Open Euphoria IO library
+--
+--* Version: 4.0.5.5
+--* Author: C A Newbould
+--* Date: 2022.01.02
+--* Status: incomplete
+--* Changes:
+--** modified layout
+--
+--== Library Interface
+--
+--=== Required modules
+--
+--*/
+--------------------------------------------------------------------------------
 include string.e -- for 'string'
 include boolean.e -- for 'FALSE', 'iif', 'TRUE'
 include char.e -- for 'char'
 include sequence.e -- for 'apply', 'map_'
-
-/*
-=== Constants
-*/
+--------------------------------------------------------------------------------
+--/*
+--=== Constants
+--*/
+--------------------------------------------------------------------------------
 public constant EOF = -1
 constant EMPTY = {}
 constant EOL = '\n'
@@ -75,9 +78,9 @@ export type filehandle(integer this) -- (i) -> f
         end if
     end function
 --------------------------------------------------------------------------------
-/*
-===Other IO routines
-*/
+--/*
+--===Other IO routines
+--*/
 --------------------------------------------------------------------------------
 export function getPromptedChar(string prompt) -- ([c]) -> c
     write(prompt & ": ")
@@ -124,6 +127,8 @@ export function writeLoop(sequence this) -- ([[c]]) -> IO
     return VOID
 end function
 --------------------------------------------------------------------------------
+-- Previous versions
+--------------------------------------------------------------------------------
 --* Version: 4.0.5.4
 --* Author: C A Newbould
 --* Date: 2021.12.09
@@ -135,7 +140,7 @@ end function
 --** ##writeln## re-defined as a function, so can be used in list-comprehensions
 --** ##writeLoop## re-defined as a function, so can be used in list-comprehensions
 --** VOID defined locally
-
+--------------------------------------------------------------------------------
 --* Version: 4.0.5.3
 --* Author: C A Newbould
 --* Date: 2020.06.26
@@ -145,14 +150,14 @@ end function
 --** //EOF// defined
 --** **filehandle** defined
 --** ##flength## defined
-
+--------------------------------------------------------------------------------
 --* Version: 4.0.5.2
 --* Author: C A Newbould
 --* Date: 2020.06.21
 --* Status: incomplete
 --* Changes:
 --** ##writeLoop## modified
-
+--------------------------------------------------------------------------------
 --* Version: 4.0.5.1
 --* Author: C A Newbould
 --* Date: 2020.06.18
@@ -161,9 +166,10 @@ end function
 --** ##writeLoop## defined
 --** ##write## extended
 --** ##writeln## re-defined
-
+--------------------------------------------------------------------------------
 --* Version: 4.0.5.0
 --* Author: C A Newbould
 --* Date: 2020.06.13
 --* Status: incomplete
 --* Changes: created
+--------------------------------------------------------------------------------
