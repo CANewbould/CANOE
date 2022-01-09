@@ -1,0 +1,65 @@
+--------------------------------------------------------------------------------
+-- object.e
+--------------------------------------------------------------------------------
+--/*
+--
+--= Open Euphoria object library
+-- Version: 4.0.5.3
+-- Author: C A Newbould
+-- Date: 2022.01.02
+-- Status: incomplete
+-- Changes:
+--* re-cast
+--* //export// used throughout
+--* documentation changed
+--* ##run## deleted
+--* ##warn## moved to //warn.e//
+--* //EMPTY// moved to //sequence.e//
+--* ##range## moved to //integer.e//
+--
+--==Open Euphoria extension library: object
+--This library contains tools which operate on the most general of built-in
+-- Open Euphoria types: the **object**.
+--
+--==Interface
+--
+--<eucode>global type object</eucode>
+--*/
+--------------------------------------------------------------------------------
+    export function cons(object this, sequence that = {}) -- (o -> {o}) -> {o}
+        return o2s(this) & that
+    end function
+    export function o2s(object this) -- (o) -> {o}
+        return {this}
+    end function
+--------------------------------------------------------------------------------
+-- Previous versions
+--------------------------------------------------------------------------------
+--* Version: 4.0.5.2
+--* Author: C A Newbould
+--* Date: 2021.12.06
+--* Status: incomplete
+--* Changes:
+--** ##range## defined
+--** ##run## consequently modified
+--** ##cons## default added
+--------------------------------------------------------------------------------
+--= FPOE: core library
+--* Version: 4.0.5.1
+--* Author: C A Newbould
+--* Date: 2020.06.29
+--* Status: incomplete
+--* Changes: created
+--** ##warn## defined
+--** //UNDEFINED// defined
+--------------------------------------------------------------------------------
+--* Version: 4.0.5.0
+--* Author: C A Newbould
+--* Date: 2020.06.26
+--* Status: incomplete
+--* Changes: created
+--** ##run## moved from //atom.e//
+--** //EMPTY// moved from //atom.e//
+--** ##cons## defined
+--** ##o2s## defined
+--------------------------------------------------------------------------------

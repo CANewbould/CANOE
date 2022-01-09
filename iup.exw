@@ -1,0 +1,73 @@
+--------------------------------------------------------------------------------
+-- iup.exw
+--------------------------------------------------------------------------------
+-- Version 4.0.5.0
+-- Date: 2022.01.01
+-- Author: C A Newbould
+-- Status: operational
+-- Changes:
+--* created
+--* fully-documented
+--------------------------------------------------------------------------------
+-- This app tests a basic IUP session, with a top-level window, some widgets
+-- inside some containers, with various attributes set.
+--
+-- The callback mechanism is also tested.
+--------------------------------------------------------------------------------
+-- Required files
+--------------------------------------------------------------------------------
+include library/iup.e -- for IUP engine
+include library/iup.ew -- for IUP widgets
+--------------------------------------------------------------------------------
+-- The IUP app --
+--* set up the standard IUP structure: Open; MainLoop; Close
+--* use constants (invariants) to identify widgets and colours
+--* qualify the basic design with layout and attribute settings
+--* link the event handlers - they can appear anywhere in the module
+--* define, title, size and display the top-level window
+--
+-- Special features:
+--* use of html markup tags to emphasise certain textual items
+--* use of 'New' and its ability to assign multiple attributes in one step
+--* use of unnamed Constructors
+--* use of gaps to space out items
+--* use of colour
+--* use of leading commas to emphasise continuation of definitions
+--* use of different default actions in widget definitions
+--* calling non-void functions as if they are procedures
+--------------------------------------------------------------------------------
+Open()
+    constant b = Button("I can close the App")
+            ,b1 = Button("I call a message-box", "BUTTON_CB")
+            ,lbl = Label("I am a Label")
+            ,v = Vbox({b,lbl})
+            ,RED = "255 0 0", GREEN = "0 255 0"
+    SetAttribute(b, "FGCOLOR", RED)
+    SetCallback(b, "ACTION",Icallback("b_onClick"))
+    SetCallback(b1, "BUTTON_CB",Icallback("b1_onClick"))
+    SetAttribute(lbl, "FGCOLOR", GREEN)
+    SetAttribute(lbl, "TIP", "I do nothing")
+    SetAttribute(v, "GAP", "30")
+    constant t = New(Toggle("I am a <b>Toggle</b>"), "MARKUP=YES,VALUE=ON")
+            ,h = New(Hbox({v, b1, t}), "GAP=20")
+            ,d = New(Dialog(h), "DIALOGFRAME=YES,SIZE=400x200,TITLE=Testing")
+    Show(d, {100, 50})
+MainLoop()
+Close()
+--------------------------------------------------------------------------------
+-- Event handlers
+--
+--* arguments are not strictly necessary for these actions
+--* all event-handlers must return a value - usually one of the standard values
+--------------------------------------------------------------------------------
+function b_onClick(Ihandle self)
+    return CLOSE
+end function
+function b1_onClick(Ihandle self)
+    ?Alarm(d, GetAttribute(d, "SIZE"), "Testing's SIZE attribute", "OKCANCEL")
+    return DEFAULT
+end function
+--------------------------------------------------------------------------------
+-- Previous versions
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
