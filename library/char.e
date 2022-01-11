@@ -23,18 +23,18 @@
 --------------------------------------------------------------------------------
 include ints.e -- for 'Ints'
 --------------------------------------------------------------------------------
-export type char(integer c) --> i -> c
+export type char(integer c) --> t(i) -> c
     return find(c, Ints(' ', '~') & Ints(10,13))
     end type
-    export function lower(char this) -- (c) -> c
+    export function lower(char this) -- f(c) -> c
         if find(this, Ints('A', 'Z')) then return this + 32
         else return this
         end if
     end function
-    export function s2(char x, integer y) -- (c -> i) -> i
+    export function s2(char x, integer y) -- f(c -> i) -> i
         return (x-48) + 10*y
     end function
-    export function upper(char this) -- (c) -> c
+    export function upper(char this) -- f(c) -> c
         if find(this, Ints('a', 'z')) then return this - 32
         else return this
         end if

@@ -1,33 +1,30 @@
 --------------------------------------------------------------------------------
---	Library: clib.e
+--	Library: iupwb.ew
 --------------------------------------------------------------------------------
 -- Notes:
 --
 --
 --------------------------------------------------------------------------------
 --/*
---= Library: <functional-euphoria>clib.e
--- Description: a library to handle C-language libraries in OE.
+--= Library: iup.ew
+-- Description: the extension IUP library to access the webbrowser
 ------
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2022.01.01
+--Date: 2022.01.11
 --Status: complete; operational
 --Changes:]]]
 --* created
---* **clib** defined
---* ##Clib## defined
 --
---==Open Euphoria extension library: clib
+--==OE library: iupwb
 --
--- This library hold all the functionality for accessing the content
--- of a C-language library in FPOE.
+-- This library hold all the functionality for running the IUP web-browser
+-- in OE.
 --
 -- Utilise this support by adding the following statement to the calling
 -- module:
--- <eucode>include clib.e</eucode>
-------
+-- <eucode>include iupwb.ew</eucode>
 --*/
 --------------------------------------------------------------------------------
 --/*
@@ -38,18 +35,27 @@
 --=== Includes
 --
 --------------------------------------------------------------------------------
+include iup.e -- for 'IUP'
+include clib.e -- for 'Clib'
+include crid.e -- for 'crid', 'Crid', 'fC', 'vfC'
 --------------------------------------------------------------------------------
 --/*
---=== clib type
+--=== IUP webbrowser
 --*/
 --------------------------------------------------------------------------------
-constant M_OPEN_DLL = 50
-export type clib(atom c) -- t(a) -> cl
-    return c > 0
-    end type
-    export function Clib(sequence libs) -- f([[c]]) -> cl
-        return machine_func(M_OPEN_DLL, libs)
-        end function
+constant IUPWB = Clib("libiupweb.so")
+constant C_H = C_P
+--------------------------------------------------------------------------------
+export function Open() -- f() -> v
+    crid WBO = Crid("+IupWebBrowserOpen", IUPWB, {})
+    c_proc(WBO, {})
+    return 0
+end function
+--------------------------------------------------------------------------------
+export function WebBrowser() -- f() -> wb
+    crid WB = Crid("+IupWebBrowser", IUPWB, {}, C_H)
+    return c_func(WB, {})
+end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------

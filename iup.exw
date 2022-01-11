@@ -39,12 +39,14 @@ include library/iup.ew -- for IUP widgets
 Open()
     constant b = Button("I can close the App")
             ,b1 = Button("I call a message-box", "BUTTON_CB")
+            ,b2 = Button("Use GetTest")
             ,lbl = Label("I am a Label")
-            ,v = Vbox({b,lbl})
+            ,v = Vbox({b,b2,lbl})
             ,RED = "255 0 0", GREEN = "0 255 0"
     SetAttribute(b, "FGCOLOR", RED)
     SetCallback(b, "ACTION",Icallback("b_onClick"))
     SetCallback(b1, "BUTTON_CB",Icallback("b1_onClick"))
+    SetCallback(b2, "ACTION", Icallback("b2_onClick"))
     SetAttribute(lbl, "FGCOLOR", GREEN)
     SetAttribute(lbl, "TIP", "I do nothing")
     SetAttribute(v, "GAP", "30")
@@ -60,11 +62,25 @@ Close()
 --* arguments are not strictly necessary for these actions
 --* all event-handlers must return a value - usually one of the standard values
 --------------------------------------------------------------------------------
+include library/string.e -- for 'string'
 function b_onClick(Ihandle self)
     return CLOSE
 end function
 function b1_onClick(Ihandle self)
-    ?Alarm(d, GetAttribute(d, "SIZE"), "Testing's SIZE attribute", "OKCANCEL")
+    integer i = Alarm(d, GetAttribute(d, "SIZE"),
+                        "Testing's SIZE attribute", "OKCANCEL")
+    string btn
+    switch i do
+    case 1 then btn = "OK"
+    case 2 then btn = "Cancel"
+    case 3 then btn = "Escape"    
+    end switch
+    Message("You clicked " & btn, "Alarming")
+    return DEFAULT
+end function
+function b2_onClick(Ihandle self)
+    sequence s = GetText("", "Title", 300)
+    Message(s[2],"The text you keyed")
     return DEFAULT
 end function
 --------------------------------------------------------------------------------
