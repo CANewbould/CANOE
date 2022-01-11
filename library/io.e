@@ -50,28 +50,28 @@ end function
 export type filehandle(integer this) -- (i) -> f
     return this = UNSET or this > 2
     end type
-    export function flength(filehandle fh) -- (f) -> i
+    export function flength(filehandle fh) -- (f) -> i - number of bytes in file
         if fseek(fh, 0) -- successful move to start of file
         then return iif(fseek(fh, EOF), fwhere(fh), 0) -- len | 0
         else return 0
         end if
     end function
-    export function flines(filehandle fh) -- (f) -> [[c]]
+    export function flines(filehandle fh) -- (f) -> [[c]] - contents as strings
         if fseek(fh, 0) -- successfully back to start of file
         then return apply("getString", fh, EOF)
         else return EMPTY
         end if
     end function
-    export function fread(filehandle fh) -- (f) -> [c]
+    export function fread(filehandle fh) -- (f) -> [c] - contents as a string
         if fseek(fh, 0) -- successfully back to start of file
         then return apply("getCh", fh, EOF)
         else return EMPTY
         end if
     end function
-    export function getCh(filehandle this) -- (f) -> c
+    export function getCh(filehandle this) -- (f) -> c - 'getc'
         return getc(this)
     end function
-    export function getString(filehandle this) -- (f) -> [c]
+    export function getString(filehandle this) -- (f) -> [c] - cr-trimmed 'gets'
         object o = gets(this)
         if atom(o) then return o
         else return o[1..$-1]
@@ -82,7 +82,7 @@ export type filehandle(integer this) -- (i) -> f
 --===Other IO routines
 --*/
 --------------------------------------------------------------------------------
-export function getPromptedChar(string prompt) -- ([c]) -> c
+export function getPromptedChar(string prompt) -- ([c]) -> c - prompted 'getCh'
     write(prompt & ": ")
     sequence s = gets(KEYBOARD)
     return s[1] -- needed to stop the trailing EOL being recycled
@@ -93,7 +93,7 @@ export function put(string this) -- ([c]) -> IO
     return TRUE
 end function
 --------------------------------------------------------------------------------
-export function write(object this = "") -- (o) -> IO
+export function write(object this = "") -- (o) -> IO -- writes to terminal in best way
     if atom(this) then
         if char(this) then puts(SCREEN, this)
         else return VOID
@@ -106,23 +106,23 @@ export function write(object this = "") -- (o) -> IO
     return VOID
 end function
 --------------------------------------------------------------------------------
-export function writef(object this, string format) -- (o -> [c]) -> IO
+export function writef(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf'
     printf(SCREEN, format, {this})
     return VOID
 end function
 --------------------------------------------------------------------------------
-export function writefln(object this, string format) -- (o -> [c]) -> IO
+export function writefln(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf' with lf
     printf(SCREEN, format & EOL, {this})
     return VOID
 end function
 --------------------------------------------------------------------------------
-export function writeln(object this = "") -- (o) -> IO
+export function writeln(object this = "") -- (o) -> IO - 'puts' to terminal with lf
     write(this)
     puts(SCREEN, EOL)
     return VOID
 end function
 --------------------------------------------------------------------------------
-export function writeLoop(sequence this) -- ([[c]]) -> IO
+export function writeLoop(sequence this) -- ([[c]]) -> IO - write contents of sequence using 'puts' to terminal with lf
     map_("put", this)
     return VOID
 end function
