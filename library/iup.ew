@@ -55,78 +55,78 @@ end function
 --=== IUP widgets
 --*/
 --------------------------------------------------------------------------------
-export type Ihandle(atom h) -- (a) -> h - a 'control' widget
+export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
     return h >= 0 -- allows for NULL
     end type
-    export function GetAttribute(Ihandle this, string attrib) -- (h -> [c]) -> [c]
+    export function GetAttribute(Ihandle this, string attrib) -- f(h -> [c]) -> [c]
         crid GA = Crid("+IupGetAttribute", IUP, {C_P, C_S}, C_S)
         return peek_string(c_func(GA, {this, s2c(attrib)}))
     end function
-    export function SetAttribute(Ihandle widget, string attrib, string val) -- (h -> [c] -> [c]) -> v
+    export function SetAttribute(Ihandle widget, string attrib, string val) -- f(h -> [c] -> [c]) -> v
         crid SA = Crid("+IupSetAttribute", IUP, {C_H, C_S, C_S})
         return vfC(SA, {widget, s2c(attrib), s2c(val)})
     end function
-    export function SetCallback(Ihandle widget, string action, atom fn) -- (h -> [c] -> a) -> a
+    export function SetCallback(Ihandle widget, string action, atom fn) -- f(h -> [c] -> a) -> a
         crid SC = Crid("+IupSetCallback", IUP, {C_H, C_S, C_I}, C_I)
         return fC(SC, {widget, s2c(action), fn})
     end function
-    export function Button(string title, string action = "") -- ([c] -> [c]) -> h
+    export function Button(string title, string action = "") -- f([c] -> [c]) -> h
         crid B = Crid("+IupButton", IUP, {C_S, C_S}, C_H)
         return fC(B, {s2c(title), s2c(action)})
     end function
-    export function Canvas(string action = "") -- ([c]) -> h
+    export function Canvas(string action = "") -- f([c]) -> h
         crid C = Crid("+IupCanvas", IUP, {C_S}, C_H)
         return fC(C, {s2c(action)})
     end function
-    export function Gauge() -- () -> h
+    export function Gauge() -- f() -> h
         crid G = Crid("+IupGauge", IUP, {}, C_H)
         return fC(G, {})
     end function
-    export function Label(string title) -- ([c]) -> h
+    export function Label(string title) -- f([c]) -> h
         crid L = Crid("+IupLabel", IUP, {C_S}, C_H)
         return fC(L, {s2c(title)})
     end function
-    export function New(Ihandle i, string s) -- (h -> [c]) --> h
+    export function New(Ihandle i, string s) -- f(h -> [c]) --> h
         crid SAS = Crid("+IupSetAttributes", IUP, {C_H, C_S}, C_H)
         return fC(SAS, {i, s2c(s)})
     end function
-    export function Text(string action = "") -- ([c]) -> h
+    export function Text(string action = "") -- f([c]) -> h
         crid T = Crid("+IupText", IUP, {C_S}, C_H)
         return fC(T, {s2c(action)})
     end function
-    export function Toggle(string title, string action = "") -- ([c] -> [c]) -> h
+    export function Toggle(string title, string action = "") -- f([c] -> [c]) -> h
         crid T = Crid("+IupToggle", IUP, {C_S, C_S}, C_H)
         return fC(T, {s2c(title), s2c(action)})
     end function
 --------------------------------------------------------------------------------
-type container(atom c)
+export type container(atom c)
     return Ihandle(c)
     end type
-    export function Hbox(ints children) -- ([h]) -> h
+    export function Hbox(ints children) -- f([h]) -> h
         crid HB = Crid("+IupHbox", IUP, repeat(C_H, length(children)+1), C_H)
         return fC(HB, children & NULL)
         end function
-    export function Radio(container c = NULL) -- (h) -> h
+    export function Radio(container c = NULL) -- f(h) -> h
         crid R = Crid("+IupRadio", IUP, {C_H}, C_H)
         return fC(R, {c})
     end function
-    export function Vbox(ints children) -- ([h]) -> h
+    export function Vbox(ints children) -- f([h]) -> h
         crid VB = Crid("+IupVbox", IUP, repeat(C_H, length(children)+1), C_H)
         return fC(VB, children & NULL)
         end function
 --------------------------------------------------------------------------------
-type dialog(atom d)
+export type dialog(atom d) -- t(a -> t(h)) -> d
     return Ihandle(d)
     end type
-    export function Dialog(Ihandle child = NULL) -- (h) -> h
+    export function Dialog(Ihandle child = NULL) -- f(h) -> d
         crid D = Crid("+IupDialog", IUP, {C_H}, C_H)
         return fC(D, {child})
         end function
-    export function Hide(dialog d) -- (d) -> i
+    export function Hide(dialog d) -- f(d) -> i
         crid H = Crid("+IupHide", IUP, {C_H}, C_I)
         return fC(H, {d})
         end function
-    export function Show(dialog d, ints pos = {}) -- (h -> [i]) -> i
+    export function Show(dialog d, ints pos = {}) -- f(d -> [i]) -> i
         if length(pos) then
             crid SXY = Crid("+IupShowXY", IUP, {C_H, C_I, C_I}, C_I)
             return fC(SXY, {d} & pos)
@@ -135,11 +135,11 @@ type dialog(atom d)
             return fC(S, {d})
         end if
         end function
-    export function Error(dialog d = NULL, string message) -- (h -> [c]) -> v
+    export function Error(dialog d = NULL, string message) -- f(d -> [c]) -> v
         crid E = Crid("+IupMessageError", IUP, {C_H, C_S})
         return vfC(E, {d, s2c(message)})
     end function
-    export function Alarm(dialog d = NULL, string message, string title, string buttons = "OK") -- (h -> [c] -> [c] -> [c]) -> i
+    export function Alarm(dialog d = NULL, string message, string title, string buttons = "OK") -- f(d -> [c] -> [c] -> [c]) -> i
         crid A = Crid("+IupMessageAlarm", IUP, {C_H, C_S, C_S, C_S}, C_I)
         return fC(A, {d, s2c(title), s2c(message), s2c(buttons)})
     end function

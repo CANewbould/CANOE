@@ -9,13 +9,13 @@
 --= Library: iup.e
 -- Description: a library to interface the IUP GUI with OE.
 ------
---[[[Version: 4.0.5.1
+--[[[Version: 4.0.5.2
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2022.01.02
+--Date: 2022.01.10
 --Status: complete; operational
 --Changes:]]]
---* ##Message## defined
+--* ##GetText## defined
 --
 --==OE library: iup
 --
@@ -41,36 +41,58 @@ include crid.e -- for 'crid', 'Crid', 'fC', 'vfC'
 include string.e -- for 'string', 's2c'
 --------------------------------------------------------------------------------
 constant C_S = C_P
-export function Message(string message, string title) -- ([c] -> [c]) -> v
+export function Message(string message, string title) -- f([c] -> [c]) -> v
     crid M = Crid("+IupMessage", IUP, {C_S, C_S})
     return vfC(M, {s2c(title), s2c(message)})
+end function
+--------------------------------------------------------------------------------
+include address.e -- for 'address', 'Address', 'free'
+export function GetText(string text, string title, integer maxsize = 10240) -- f([c] -> [c] -> i) -> [i,[c]]
+    crid GT = Crid("+IupGetText", IUP, {C_S, C_S, C_I}, C_I)
+    address m = s2c(text,maxsize)
+    integer ret = fC(GT,{s2c(title),m,maxsize})
+    string st = peek_string(m)
+    free(m) 
+    return {ret,st}
 end function
 --------------------------------------------------------------------------------
 --/*
 --=== IUP core
 --*/
 --------------------------------------------------------------------------------
-constant LIB = "libiup.so"
+ifdef WINDOWS then
+    constant LIB = "iup.so"
+elsifdef LINUX then
+    constant LIB = "libiup.so"
+end ifdef
 export constant IUP = Clib(LIB)
-export function Close() -- () -> v
-    crid CLOSE = Crid("+IupClose", IUP)
-    return vfC(CLOSE)
-    end function
-export function Open() -- () -> i
-    crid OPEN = Crid("+IupOpen", IUP, {C_I, C_P}, C_I)
-    return fC(OPEN, {NULL, NULL})
-    end function
-export function MainLoop() -- () -> v
-    crid ML = Crid("+IupMainLoop", IUP)
-    return vfC(ML)
-    end function
-export function Version() -- () -> a
-    crid VERNO = Crid("+IupVersionNumber", IUP,,C_I)
-    return fC(VERNO)/100000
-    end function
+    export function Close() -- f() -> v
+        crid CLOSE = Crid("+IupClose", IUP)
+        return vfC(CLOSE)
+        end function
+    export function Open() -- f() -> i
+        crid OPEN = Crid("+IupOpen", IUP, {C_I, C_P}, C_I)
+        return fC(OPEN, {NULL, NULL})
+        end function
+    export function MainLoop() -- f() -> v
+        crid ML = Crid("+IupMainLoop", IUP)
+        return vfC(ML)
+        end function
+    export function Version() -- f() -> a
+        crid VERNO = Crid("+IupVersionNumber", IUP,,C_I)
+        return fC(VERNO)/100000
+        end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--[[[Version: 4.0.5.1
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.02
+--Status: complete; operational
+--Changes:]]]
+--------------------------------------------------------------------------------
+--* ##Message## defined
 --[[[Version: 4.0.5.0
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould

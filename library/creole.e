@@ -4,15 +4,13 @@
 --/*
 --
 --= Open Euphoria creole library
--- Version: 4.0.5.1
+-- Version: 4.0.5.2
 -- Author: C A Newbould
--- Date: 2022.01.03
+-- Date: 2022.01.11
 -- Status: incomplete
 -- Changes:
---* copied from example
---* all routines made into functions
---* all scopes set to //export//
---* extended documentation
+--* extended ##Display## to cover use of IUP
+--* changed default in ##Display## to "IUP"
 --
 --==Open Euphoria extension library: creole
 --
@@ -65,13 +63,39 @@ export function writef(object o, string f) -- (o -> [c]) -> IO
     return VOID
 end function
 --------------------------------------------------------------------------------
-export function display(string browser = "firefox") -- ([c]) -> IO
+include iup.e as IUP
+include iup.ew
+include iupwb.ew as WB
+export function display(string browser = "IUP") -- ([c]) -> IO
     close(CREOLE)
-    -- Display results
     system("creole test.cr", 0)
-    return system_exec(browser & " test.html", 0)
+    -- Display results
+    if equal(browser,"IUP") then
+        IUP:Open()
+        WB:Open()
+        Ihandle wb = WebBrowser()
+        SetAttribute(wb,"EXPAND","YES")
+        SetAttribute(wb, "VALUE","file://" & machine_func(23) & "/test.html")
+        dialog d = Dialog(wb)
+        SetAttribute(d,"TITLE","Creole-based ouput")
+        SetAttribute(d,"SIZE","500x300")
+        Show(d)
+        IUP:MainLoop()
+        return IUP:Close()
+    else
+        return system_exec(browser & " test.html", 0)
+    end if
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.0.5.1
+-- Author: C A Newbould
+-- Date: 2022.01.03
+-- Status: incomplete
+-- Changes:
+--* copied from example
+--* all routines made into functions
+--* all scopes set to //export//
+--* extended documentation
 --------------------------------------------------------------------------------
