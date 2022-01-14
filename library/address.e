@@ -4,13 +4,13 @@
 --/*
 --
 --= Open Euphoria address library
---* Version: 4.0.5.1
+--* Version: 4.0.5.2
 --* Author: C A Newbould
---* Date: 2022.01.10
+--* Date: 2022.01.12
 --* Status: incomplete
 --* Changes:
---** created
---** ##free## defined
+--** ##poke_## defined
+--** ##copy## defined
 --
 --==Open Euphoria extension library: address
 --This library contains tools that apply to the **address*
@@ -36,9 +36,25 @@ export type address(atom a) -- t(a) -> addr
         else return NULL
         end if
     end function
+    export function copy(address a, address b, integer i) -- f(addr -> addr -> i) -> addr
+        mem_copy(a, b, i)
+        return b
+    end function
     export function free(address a) -- f(addr) -> v
         machine_proc(M_FREE, a)
         return VOID
+    end function
+    export enum SHORT, BYTE, DOUBLE, LONG, QUAD, POINTER
+    export function poke_(address a, object o, integer typ = BYTE) -- f(addr -> o -> i) -> addr
+        switch typ do
+        case SHORT then poke2(a, o)
+        case BYTE then poke(a, o)
+        case DOUBLE then poke4(a, o)
+        case LONG then poke_long(a, o)
+        case QUAD then poke8(a, o)
+        case POINTER then poke_pointer(a, o)
+        end switch
+        return a
     end function
 --------------------------------------------------------------------------------
 --/*
@@ -46,6 +62,14 @@ export type address(atom a) -- t(a) -> addr
 --*/
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--* Version: 4.0.5.1
+--* Author: C A Newbould
+--* Date: 2022.01.10
+--* Status: incomplete
+--* Changes:
+--** created
+--** ##free## defined
 --------------------------------------------------------------------------------
 --* Version: 4.0.5.0
 --* Author: C A Newbould
