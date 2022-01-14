@@ -9,13 +9,13 @@
 --= Library: iup.e
 -- Description: a library to interface the IUP GUI with OE.
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.3
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2022.01.10
+--Date: 2022.01.11
 --Status: complete; operational
 --Changes:]]]
---* ##GetText## defined
+--* ##GetFile## defined
 --
 --==OE library: iup
 --
@@ -47,6 +47,16 @@ export function Message(string message, string title) -- f([c] -> [c]) -> v
 end function
 --------------------------------------------------------------------------------
 include address.e -- for 'address', 'Address', 'free'
+--------------------------------------------------------------------------------
+export function GetFile(string filename, integer maxsize = 4096) -- f([c] -> i) -> [i,[c]]
+    crid GF = Crid("+IupGetFile", IUP, {C_S, C_I}, C_I)
+    address m = s2c(filename,maxsize)
+    integer ret = fC(GF,{m,maxsize})
+    string st = peek_string(m)
+    free(m) 
+    return {ret,st}
+end function
+--------------------------------------------------------------------------------
 export function GetText(string text, string title, integer maxsize = 10240) -- f([c] -> [c] -> i) -> [i,[c]]
     crid GT = Crid("+IupGetText", IUP, {C_S, C_S, C_I}, C_I)
     address m = s2c(text,maxsize)
@@ -84,6 +94,14 @@ export constant IUP = Clib(LIB)
         end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.2
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.10
+--Status: complete; operational
+--Changes:]]]
+--* ##GetText## defined
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
