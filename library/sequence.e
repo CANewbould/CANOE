@@ -4,16 +4,12 @@
 --/*
 --
 --= Open Euphoria sequence library
--- Version: 4.0.5.1
+-- Version: 4.0.5.2
 -- Author: C A Newbould
--- Date: 2022.01.03
+-- Date: 2022.01.12
 -- Status: incomplete
 -- Changes:
---* created
---* ##head## renamed ##head_##
---* documentation expanded
---* ##filter## revised
---* ##fold## revised
+--* ##add2## defined
 --
 --==Open Euphoria extension library: sequence
 -- This library contains tools that apply to the in-built
@@ -63,6 +59,12 @@ end function
 --<eucode>global type sequence</eucode>
 --*/
 --------------------------------------------------------------------------------
+    export enum AFTER = 0, BEFORE
+    export function add2(sequence s, object o, integer i = AFTER) -- f([o] -> o -> i) -> [o] - adds 'o' after|before|ith-pos-of 's'
+        if i = AFTER then return append(s, o)   -- uses Core routine
+        else return splice(s, o, i) -- i is positive (BEFORE = 1) so prepend subsumed
+        end if
+    end function
     export function filter(sequence s, string fn, object target, integer func = routine_id(fn)) -- ({o} -> ((o -> o) -> b)) -> {o}
         switch length(s) do
             case 0 then return EMPTY
@@ -119,6 +121,16 @@ end function
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.1
+-- Author: C A Newbould
+-- Date: 2022.01.03
+-- Status: incomplete
+-- Changes:
+--* ##head## renamed ##head_##
+--* documentation expanded
+--* ##filter## revised
+--* ##fold## revised
 --------------------------------------------------------------------------------
 -- Version: 4.0.5.0
 -- Author: C A Newbould
