@@ -1,14 +1,12 @@
 --------------------------------------------------------------------------------
 -- html.ex
 --------------------------------------------------------------------------------
--- Version 4.0.5.0
--- Date: 2022.01.03
+-- Version 4.0.5.1
+-- Date: 2022.01.15
 -- Author: C A Newbould
 -- Status: operational
 -- Changes:
---* created
---* fully-documented
---* tested
+--* modified to test IUP interface
 --------------------------------------------------------------------------------
 -- This application is a proof-of-concept: the target "screen" is
 -- a webbrowser tab rather than a terminal window.
@@ -102,7 +100,7 @@ write("</body>")
 -- They could be useful in the event of an error in the output, as it is
 -- perfectly readable.
 --------------------------------------------------------------------------------
-display() -- a [string] parameter will change the browser used
+display("IUP") -- a [string] parameter will change the browser used
 --------------------------------------------------------------------------------
 -- NB: STDERR is now clear for its proper purpose, as shown here
 --------------------------------------------------------------------------------
@@ -111,4 +109,12 @@ warn(888)
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version 4.0.5.0
+-- Date: 2022.01.03
+-- Author: C A Newbould
+-- Status: operational
+-- Changes:
+--* created
+--* fully-documented
+--* tested
 --------------------------------------------------------------------------------
