@@ -4,15 +4,12 @@
 --/*
 --
 --= Open Euphoria html library
--- Version: 4.0.5.1
+-- Version: 4.0.5.2
 -- Author: C A Newbould
--- Date: 2022.01.03
+-- Date: 2022.01.15
 -- Status: incomplete
 -- Changes:
---* copied from creole
---* all routines made into functions
---* all scopes set to //export//
---* extended documentation
+--* changed ##display## to accept //IUP//
 --
 --==Open Euphoria extension library: html
 --
@@ -65,12 +62,38 @@ export function writef(object o, string f) -- (o -> [c]) -> IO
     return VOID
 end function
 --------------------------------------------------------------------------------
+include iup.e as IUP
+include iup.ew
+include iupwb.ew as WB
 export function display(string browser = "firefox") -- ([c]) -> IO
     close(HTML)
     -- Display results
-    return system_exec(browser & " test.html", 0)
+    if equal(browser,"IUP") then
+        IUP:Open()
+        WB:Open()
+            Ihandle wb = WebBrowser()
+            SetAttribute(wb,"EXPAND","YES")
+            SetAttribute(wb, "VALUE","file://" & machine_func(23) & "/test.html")
+            dialog d = Dialog(wb)
+            SetAttribute(d,"TITLE","HTML-based ouput")
+            SetAttribute(d,"SIZE","500x300")
+            Show(d)
+        IUP:MainLoop()
+        return IUP:Close()
+    else
+        return system_exec(browser & " test.html", 0)
+    end if
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.0.5.1
+-- Author: C A Newbould
+-- Date: 2022.01.03
+-- Status: incomplete
+-- Changes:
+--* copied from creole
+--* all routines made into functions
+--* all scopes set to //export//
+--* extended documentation
 --------------------------------------------------------------------------------
