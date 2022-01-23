@@ -43,10 +43,10 @@
 --=== clib type
 --*/
 --------------------------------------------------------------------------------
-constant M_OPEN_DLL = 50
 export type clib(atom c) -- t(a) -> cl
     return c > 0
     end type
+    constant M_OPEN_DLL = 50
     export function Clib(sequence libs) -- f([[c]]) -> cl
         return machine_func(M_OPEN_DLL, libs)
         end function

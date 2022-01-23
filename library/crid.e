@@ -48,12 +48,10 @@ include string.e -- for 'string'
 --=== crid type
 --*/
 --------------------------------------------------------------------------------
-export constant C_I = #01000004, C_P = #03000001
-constant M_DEFINE_C = 51, VOID = 0
-export constant NULL = 0
 export type crid(integer f) -- (i) ->cr
     return f > -2
     end type
+    constant M_DEFINE_C = 51,VOID = 0
     export function Crid(string name, clib lib, ints cargs = {}, integer cret = VOID) --  ([c] -> cl -> [i] -> i) -> cr
         return machine_func(M_DEFINE_C, {lib, name, cargs, cret})
         end function
@@ -64,6 +62,8 @@ export type crid(integer f) -- (i) ->cr
         c_proc(fn, eargs)
         return VOID
         end function
+export constant C_I = #01000004, C_P = #03000001
+export constant NULL = 0
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
