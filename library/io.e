@@ -5,15 +5,12 @@
 --
 --= Open Euphoria IO library
 --
---* Version: 4.0.5.6
+--* Version: 4.0.5.7
 --* Author: C A Newbould
 --* Date: 2022.01.23
 --* Status: incomplete
 --* Changes:
---** modified layout
---** ##fwrite## defined
---** ##fwrites## defined
---** ##write## generalised
+--** further modified layout
 --
 --== Library Interface
 --
@@ -94,52 +91,70 @@ export type filehandle(integer this) -- (i) -> f
 --===Other IO routines
 --*/
 --------------------------------------------------------------------------------
-export function getPromptedChar(string prompt) -- ([c]) -> c - prompted 'getCh'
-    write(prompt & ": ")
-    sequence s = gets(KEYBOARD)
-    return head_(s)--s[1] -- needed to stop the trailing EOL being recycled
+--/*
+--<eucode>type string</eucode>
+--*/
+--------------------------------------------------------------------------------
+    export function getPromptedChar(string prompt) -- ([c]) -> c - prompted 'getCh'
+        write(prompt & ": ")
+        sequence s = gets(KEYBOARD)
+        return head_(s)--s[1] -- needed to stop the trailing EOL being recycled
+    end function
+    export function put(string this) -- ([c]) -> IO
+        writeln(this)
+        return TRUE
     end function
 --------------------------------------------------------------------------------
-export function put(string this) -- ([c]) -> IO
-    writeln(this)
-    return TRUE
-end function
+--/*
+--<eucode>type object</eucode>
+--*/
 --------------------------------------------------------------------------------
-export function write(object this = "") -- f(o) -> IO -- writes to output stream in best way
-    if atom(this) then
-        if char(this) then puts(SCREEN, this)
-        else return VOID
+    export function write(object this = "") -- f(o) -> IO -- writes to output stream in best way
+        if atom(this) then
+            if char(this) then puts(SCREEN, this)
+            else return VOID
+            end if
+        else -- sequence
+            if string(this) then puts(SCREEN, this)
+            else ?this
+            end if
         end if
-    else -- sequence
-        if string(this) then puts(SCREEN, this)
-        else ?this
-        end if
-    end if
-    return VOID
-end function
+        return VOID
+    end function
+    export function writef(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf'
+        printf(SCREEN, format, {this})
+        return VOID
+    end function
+    export function writefln(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf' with lf
+        printf(SCREEN, format & EOL, {this})
+        return VOID
+    end function
+    export function writeln(object this = "") -- (o) -> IO - 'puts' to terminal with lf
+        write(this)
+        puts(SCREEN, EOL)
+        return VOID
+    end function
 --------------------------------------------------------------------------------
-export function writef(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf'
-    printf(SCREEN, format, {this})
-    return VOID
-end function
+--/*
+--<eucode>type sequence</eucode>
+--*/
 --------------------------------------------------------------------------------
-export function writefln(object this, string format) -- (o -> [c]) -> IO - reversed form of 'printf' with lf
-    printf(SCREEN, format & EOL, {this})
-    return VOID
-end function
---------------------------------------------------------------------------------
-export function writeln(object this = "") -- (o) -> IO - 'puts' to terminal with lf
-    write(this)
-    puts(SCREEN, EOL)
-    return VOID
-end function
---------------------------------------------------------------------------------
-export function writeLoop(sequence this) -- ([[c]]) -> IO - write contents of sequence using 'puts' to terminal with lf
-    map_(this,"put")
-    return VOID
-end function
+    export function writeLoop(sequence this) -- ([[c]]) -> IO - write contents of sequence using 'puts' to terminal with lf
+        map_(this,"put")
+        return VOID
+    end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--* Version: 4.0.5.6
+--* Author: C A Newbould
+--* Date: 2022.01.23
+--* Status: incomplete
+--* Changes:
+--** modified layout
+--** ##fwrite## defined
+--** ##fwrites## defined
+--** ##write## generalised
 --------------------------------------------------------------------------------
 --* Version: 4.0.5.5
 --* Author: C A Newbould
