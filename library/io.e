@@ -5,12 +5,15 @@
 --
 --= Open Euphoria IO library
 --
---* Version: 4.0.5.5
+--* Version: 4.0.5.6
 --* Author: C A Newbould
---* Date: 2022.01.02
+--* Date: 2022.01.23
 --* Status: incomplete
 --* Changes:
 --** modified layout
+--** ##fwrite## defined
+--** ##fwrites## defined
+--** ##write## generalised
 --
 --== Library Interface
 --
@@ -39,14 +42,6 @@ type fileposition(integer this) -- (i) -> p
     return this >= 0 or this = EOF
     end type
 --------------------------------------------------------------------------------
-function fseek(filehandle fh, fileposition fp) -- (f -> i) -> b
-    return not machine_func(M_SEEK, {fh, fp})
-end function
---------------------------------------------------------------------------------
-function fwhere(filehandle fh) -- :: f -> i
-    return machine_func(M_WHERE, fh)
-end function
---------------------------------------------------------------------------------
 export type filehandle(integer this) -- (i) -> f
     return this = UNSET or this > 2
     end type
@@ -56,7 +51,7 @@ export type filehandle(integer this) -- (i) -> f
         else return 0
         end if
     end function
-    export function flines(filehandle fh) -- (f) -> [[c]] - contents as strings
+    export function flines(filehandle fh) -- f(f) -> [[c]] - contents as strings
         if fseek(fh, 0) -- successfully back to start of file
         then return apply("getString", fh, EOF)
         else return EMPTY
@@ -67,6 +62,23 @@ export type filehandle(integer this) -- (i) -> f
         then return apply("getCh", fh, EOF)
         else return EMPTY
         end if
+    end function
+    export function fseek(filehandle fh, fileposition fp) -- (f -> i) -> b
+        return not machine_func(M_SEEK, {fh, fp})
+    end function
+    export function fwhere(filehandle fh) -- :: f -> i
+        return machine_func(M_WHERE, fh)
+    end function
+    export function fwrite(filehandle this,string str)
+        puts(this,str)
+        return VOID
+    end function
+    function putsfln(object o, filehandle fh) --f(o->f) -> IO
+        puts(fh,o&'\n')
+        return VOID
+    end function
+    export function fwrites(filehandle this,sequence s)
+        return map(s,"putsfln",this)
     end function
     export function getCh(filehandle this) -- (f) -> c - 'getc'
         return getc(this)
@@ -85,7 +97,7 @@ export type filehandle(integer this) -- (i) -> f
 export function getPromptedChar(string prompt) -- ([c]) -> c - prompted 'getCh'
     write(prompt & ": ")
     sequence s = gets(KEYBOARD)
-    return s[1] -- needed to stop the trailing EOL being recycled
+    return head_(s)--s[1] -- needed to stop the trailing EOL being recycled
     end function
 --------------------------------------------------------------------------------
 export function put(string this) -- ([c]) -> IO
@@ -93,7 +105,7 @@ export function put(string this) -- ([c]) -> IO
     return TRUE
 end function
 --------------------------------------------------------------------------------
-export function write(object this = "") -- (o) -> IO -- writes to terminal in best way
+export function write(object this = "") -- f(o) -> IO -- writes to output stream in best way
     if atom(this) then
         if char(this) then puts(SCREEN, this)
         else return VOID
@@ -123,11 +135,18 @@ export function writeln(object this = "") -- (o) -> IO - 'puts' to terminal with
 end function
 --------------------------------------------------------------------------------
 export function writeLoop(sequence this) -- ([[c]]) -> IO - write contents of sequence using 'puts' to terminal with lf
-    map_("put", this)
+    map_(this,"put")
     return VOID
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--* Version: 4.0.5.5
+--* Author: C A Newbould
+--* Date: 2022.01.02
+--* Status: incomplete
+--* Changes:
+--** modified layout
 --------------------------------------------------------------------------------
 --* Version: 4.0.5.4
 --* Author: C A Newbould
@@ -173,3 +192,12 @@ end function
 --* Status: incomplete
 --* Changes: created
 --------------------------------------------------------------------------------
+-- test
+/*
+sequence s = {"I","am","a","sequence","of","strings"}
+filehandle f = open("test.txt","w")
+fwrites(f,s) close(f)
+filehandle fr = open("test.txt","r")
+writeLoop(flines(fr))
+close(fr)
+*/
