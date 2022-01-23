@@ -1,26 +1,27 @@
 --------------------------------------------------------------------------------
 -- string.e
 --------------------------------------------------------------------------------
+-- Notes
+--
+-- Consider s2a function
+--------------------------------------------------------------------------------
 --/*
 --
 --= Open Euphoria string library
--- Version: 4.0.5.2
+-- Version: 4.0.5.4
 -- Author: C A Newbould
--- Date: 2022.01.10
+-- Date: 2022.01.19
 -- Status: incomplete
 -- Changes:
---* ##trim## defined
---* ##startsWith## defined
---* ##s2c## extended
+--* ##trim## extended to allow for all white-space characters
 --
---==Open Euphoria extension library: string
---This library contains tools that apply to the
---**string** type defined here.
+--== Open Euphoria extension library: string
+-- This library contains tools that apply to the **string** type defined here.
 --
---A **string** is a specialised **sequence**, where all the elements are
---printable characters.
+-- A **string** is a specialised **sequence**, where all the elements are
+-- printable characters.
 --
---==Interface
+--== Interface
 --
 --*/
 --------------------------------------------------------------------------------
@@ -30,12 +31,14 @@ include char.e -- for 'char', 'lower', 's2', 'upper'
 include ints.e -- for 'Ints'
 include sequence.e -- for 'map'
 --------------------------------------------------------------------------------
+constant WHITE_SPACE = Ints(9,13) & ' '
 function trm(string this) -- f([c]) -> [c]
-    if this[1] = ' ' then
+    if length(this) = 0 then return this end if
+    if find(this[1],WHITE_SPACE) then
         integer i = 1
         loop do
             i += 1
-            until (this[i] != ' ') or i = length(this)
+            until not find(this[i],WHITE_SPACE) or i = length(this)
         end loop
         if i = length(this) then return {}
         else return this[i..$]
@@ -52,7 +55,7 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
     for n = 1 to length(this) do
         if char(this[n])
         then continue
-        else return FALSE
+        else ?this[n] return FALSE
         end if
     end for
     return TRUE
@@ -66,7 +69,9 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
     	return mem
     end function
     export function s2i(string n) -- f([c]) -> i - converts a string "integer" to its digit form
-        return fold("s2", 0, n)
+        if head_(n) = '-' then return 0 - fold(tail(n), "s2", 0)
+        else return fold(n, "s2", 0)   
+        end if
     end function
     export function split(string this) -- f([c]) -> [[c]] - separates a string into words
         integer l = length(this), i = 1
@@ -100,12 +105,29 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
         switch where do
         case BEGINNING then return trm(this)
         case ENDING then return reverse(trm(reverse(this)))
-        case BOTH then return trim(trim(ENDING))
+        case BOTH then return trim(trim(this,ENDING))
         case else return this
         end switch
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.3
+-- Author: C A Newbould
+-- Date: 2022.01.17
+-- Status: incomplete
+-- Changes:
+--* error in signature of ##s2i## corrected
+--* ##s2i## extended to allow a negative value
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.2
+-- Author: C A Newbould
+-- Date: 2022.01.10
+-- Status: incomplete
+-- Changes:
+--* ##trim## defined
+--* ##startsWith## defined
+--* ##s2c## extended
 --------------------------------------------------------------------------------
 -- Version: 4.0.5.1
 -- Author: C A Newbould

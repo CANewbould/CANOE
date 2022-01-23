@@ -9,15 +9,13 @@
 --= Library: iup.ew
 -- Description: the base library to interface the IUP GUI with OE.
 ------
---[[[Version: 4.0.5.2
+--[[[Version: 4.0.5.4
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2022.01.03
+--Date: 2022.01.23
 --Status: complete; operational
 --Changes:]]]
---* ##Alarm## defined
---* ##Gauge## defined
---* ##Canvas## defined
+--* ##Destroy## defined
 --
 --==OE library: iup
 --
@@ -70,6 +68,15 @@ export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
         crid SC = Crid("+IupSetCallback", IUP, {C_H, C_S, C_I}, C_I)
         return fC(SC, {widget, s2c(action), fn})
     end function
+    --void IupSetFloat (Ihandle* ih, const char* name, float value);
+    export function SetFloat(Ihandle widget, string attrib, atom val) -- f(h -> [c] -> a) -> v
+        crid SF = Crid("+IupSetFloat", IUP, {C_H, C_S, C_I})
+        return vfC(SF, {widget, s2c(attrib), val})
+    end function
+    export function SetInt(Ihandle widget, string attrib, integer val) -- f(h -> [c] -> i) -> v
+        crid SI = Crid("+IupSetInt", IUP, {C_H, C_S, C_I})
+        return vfC(SI, {widget, s2c(attrib), val})
+    end function
     export function Button(string title, string action = "") -- f([c] -> [c]) -> h
         crid B = Crid("+IupButton", IUP, {C_S, C_S}, C_H)
         return fC(B, {s2c(title), s2c(action)})
@@ -77,6 +84,10 @@ export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
     export function Canvas(string action = "") -- f([c]) -> h
         crid C = Crid("+IupCanvas", IUP, {C_S}, C_H)
         return fC(C, {s2c(action)})
+    end function
+    export function Fill() -- f() -> h
+        crid F = Crid("+IupFill", IUP, {}, C_H)
+        return fC(F, {})
     end function
     export function Gauge() -- f() -> h
         crid G = Crid("+IupGauge", IUP, {}, C_H)
@@ -89,6 +100,10 @@ export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
     export function New(Ihandle i, string s) -- f(h -> [c]) --> h
         crid SAS = Crid("+IupSetAttributes", IUP, {C_H, C_S}, C_H)
         return fC(SAS, {i, s2c(s)})
+    end function
+    export function Space() -- f() -> h
+        crid S = Crid("+IupSpace", IUP, {}, C_H)
+        return fC(S, {})
     end function
     export function Text(string action = "") -- f([c]) -> h
         crid T = Crid("+IupText", IUP, {C_S}, C_H)
@@ -122,6 +137,10 @@ export type dialog(atom d) -- t(a -> t(h)) -> d
         crid D = Crid("+IupDialog", IUP, {C_H}, C_H)
         return fC(D, {child})
         end function
+    export function Destroy(dialog d) -- f(d) -> i
+        crid D = Crid("+IupDestroy", IUP, {C_H}, C_I)
+        return fC(D, {d})
+        end function
     export function Hide(dialog d) -- f(d) -> i
         crid H = Crid("+IupHide", IUP, {C_H}, C_I)
         return fC(H, {d})
@@ -145,6 +164,27 @@ export type dialog(atom d) -- t(a -> t(h)) -> d
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.3
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.22
+--Status: complete; operational
+--Changes:]]]
+--* ##Fill## defined
+--* ##SetFloat## defined
+--* ##SetInt## defined
+--* ##Space## defined
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.2
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.03
+--Status: complete; operational
+--Changes:]]]
+--* ##Alarm## defined
+--* ##Gauge## defined
+--* ##Canvas## defined
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.1
 --Euphoria Versions: 4.0.5 upwards
