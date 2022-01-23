@@ -4,12 +4,14 @@
 --/*
 --
 --= Open Euphoria sequence library
--- Version: 4.0.5.2
+-- Version: 4.0.5.3
 -- Author: C A Newbould
--- Date: 2022.01.12
+-- Date: 2022.01.18
 -- Status: incomplete
 -- Changes:
---* ##add2## defined
+--* ##findAll## defined
+--* ##filter_## defined
+--* ##in## defined
 --
 --==Open Euphoria extension library: sequence
 -- This library contains tools that apply to the in-built
@@ -37,7 +39,7 @@ function goOn(object this, object that) -- (o -> o) -> b
          end if
     else if atom(that) -- this is a sequence
          then return not (equal(this, o2s(that)))
-         else return not equal(this, that)
+    else return not equal(this, that)
          end if
     end if
 end function
@@ -65,7 +67,7 @@ end function
         else return splice(s, o, i) -- i is positive (BEFORE = 1) so prepend subsumed
         end if
     end function
-    export function filter(sequence s, string fn, object target, integer func = routine_id(fn)) -- ({o} -> ((o -> o) -> b)) -> {o}
+    export function filter(sequence s, string fn, object target, integer func = routine_id(fn)) -- f([o] -> f(o -> o) -> b)) -> [o]
         switch length(s) do
             case 0 then return EMPTY
             case 1 then return iif(call_func(func, {head_(s), target}), o2s(head_(s)), EMPTY)
@@ -75,6 +77,25 @@ end function
                 return iif(lst, append(bef, last(s)), bef)
         end switch
     end function
+    export function filter_(sequence s, string fn, integer func = routine_id(fn)) -- f([o] -> f(o -> b)) -> [o]
+        switch length(s) do
+            case 0 then return EMPTY
+            case 1 then return iif(call_func(func, {head_(s)}), o2s(head_(s)), EMPTY)
+            case else
+                sequence bef = filter_(init(s), fn, func)
+                boolean lst = call_func(func, {last(s)})
+                return iif(lst, append(bef, last(s)), bef)
+        end switch
+    end function
+    export function findAll(sequence s, object o) -- f([o]->o) -> [i]
+        sequence res = EMPTY
+        integer n = find(o, s)
+        while n do
+            res &= n
+            n = find(o, s, n+1)
+        end while
+        return res
+    end function
     export function fold(sequence s, string fn, object start, integer func = routine_id(fn)) -- {o} -> ((o -> o) -> o) -> o
         switch length(s) do
             case 0 then return EMPTY
@@ -82,24 +103,26 @@ end function
             case else return call_func(func, {last(s), fold(init(s), fn, start, func)})
         end switch
     end function
-    export function head_(sequence s) -- ({o}) -> o
+    export function head_(sequence s) -- f([o]) -> o
         return s[1]
     end function
-    with warning
-    export function init(sequence s) -- ({o}) -> {o}
+    export function in(sequence s, object o) -- f([o]->o) -> i
+        return find(o,s)
+    end function
+    export function init(sequence s) -- f([o]) -> [o]
         return s[1..$-1]
     end function
     export function last(sequence s) -- ({o}) -> o
         return s[$]
     end function
-    export function map(sequence s, string fn, object val, integer func = routine_id(fn)) -- {o} -> ((o -> o) -> o) -> {o}
+    export function map(sequence s, string fn, object val, integer func = routine_id(fn)) -- f([o] -> f(o -> o) -> o) -> [o]
         switch length(s) do
             case 0 then return EMPTY
             case 1 then return {call_func(func, {head_(s), val})}
             case else return append(map(init(s), fn, val, func), call_func(func, {last(s), val}))
         end switch
     end function
-    export function map_(sequence s, string fn, integer func = routine_id(fn)) -- {o} -> (o -> o) -> {o}
+    export function map_(sequence s, string fn, integer func = routine_id(fn)) -- f([o] -> f(o) -> o) -> [o]
         switch length(s) do
             case 0 then return EMPTY
             case 1 then return o2s(call_func(func, o2s(head_(s))))
@@ -110,17 +133,24 @@ end function
                 return s
         end switch
     end function
-    export function reverse(sequence s) -- {o} -> {o}
+    export function reverse(sequence s) -- f([o]) -> [o]
         switch length(s) do
         case 0, 1 then return s
         case else return cons(last(s), reverse(init(s)))
         end switch
     end function
-    export function tail(sequence s) -- ({o}) -> {o}
+    export function tail(sequence s) -- f([o]) -> [o]
         return s[2..$]
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.2
+-- Author: C A Newbould
+-- Date: 2022.01.12
+-- Status: incomplete
+-- Changes:
+--* ##add2## defined
 --------------------------------------------------------------------------------
 -- Version: 4.0.5.1
 -- Author: C A Newbould
