@@ -23,7 +23,7 @@ The top-level folder contains a range of examples to illustrate the ideas within
 When writing apps or further library modules using the CANOE approach the following considerations should be borne in mind:
 
 * use **expression**s over **variable**s
-* avoid **loop**s
+* avoid the use of **loop**s
 * avoid dangling **else**s
 * adopt a list-comprehension perspective: eg via **map**s, **filter**s and **fold**s, or by exploiting **sequence** arithmetic
 * consider the optimum Input/Output scenario - see below
@@ -58,7 +58,7 @@ CANOE is very much a work-in-progress. Some library modules currently contain no
 
 ## OOP and dot-notation
 
-CANOE doesn't offer a route to Object-Oriented Programming (OOP) although a sister project (OE4OOP) does. The latter project adopts some of the styles and conventions of CANOE and so, one day, the two may be merged. (An OE4OOP 'object' is a **pointer**, which operates in a parallel fashion to a **type** in CANOE.)
+CANOE doesn't offer a route to Object-Oriented Programming (OOP) although a sister project (OE4OOP) does. The latter project adopts the styles and conventions of CANOE and so, one day, the two may be merged. (An OE4OOP 'object' is a **pointer**, which operates in a parallel fashion to a **type** in CANOE.)
 
 CANOE, however, does, consciously, adopt an object-centred (OC) approach. By this is meant the focus on **type**s, their inter-relationships, the functions that operate on each type and how inheritance of these applies.
 
