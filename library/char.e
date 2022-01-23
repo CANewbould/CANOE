@@ -4,12 +4,12 @@
 --/*
 --
 --= Open Euphoria char library
--- Version: 4.0.5.0
+-- Version: 4.0.5.1
 -- Author: C A Newbould
--- Date: 2022.01.02
+-- Date: 2022.01.19
 -- Status: incomplete
 -- Changes:
---* created
+--* **char** definition extended
 --
 --==Open Euphoria extension library: char
 --This library contains tools that apply to the
@@ -24,7 +24,7 @@
 include ints.e -- for 'Ints'
 --------------------------------------------------------------------------------
 export type char(integer c) --> t(i) -> c
-    return find(c, Ints(' ', '~') & Ints(10,13))
+    return find(c, Ints(' ', '~') & Ints(9,13))
     end type
     export function lower(char this) -- f(c) -> c
         if find(this, Ints('A', 'Z')) then return this + 32
@@ -42,4 +42,10 @@ export type char(integer c) --> t(i) -> c
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.0.5.0
+-- Author: C A Newbould
+-- Date: 2022.01.02
+-- Status: incomplete
+-- Changes:
+--* created
 --------------------------------------------------------------------------------
