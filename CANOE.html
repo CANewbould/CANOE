@@ -1,0 +1,120 @@
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+ <title></title>
+ <link rel="stylesheet" media="screen, projection, print" type="text/css" href="style.css"/>
+<!-- source="CANOE.cr" -->
+</head>
+<body>
+
+<a name="_0_charlesanewbouldsspecialversionofopeneuphoriacanoe"></a><a name="charlesanewbouldsspecialversionofopeneuphoriacanoe"></a><h1>Charles A Newbould's (Special) version of Open Euphoria (CANOE)</h1>
+<p> This document summarises the facilities so far available in this project, as stored in the various modules in the <em>library</em> folder.</p>
+
+<a name="_1_addresse"></a><a name="addresse"></a><h2>address.e</h2><ul><li><strong>address</strong><ul><li><tt>Address</tt>(atom) --&gt; address
+</li><li><tt>copy</tt>(address,address,integer) --&gt; address
+</li><li><tt>free</tt>(address) --&gt; void
+</li><li><tt>poke_</tt>(address,object,flag) --&gt; address
+</li></ul>
+</li></ul>
+<a name="_2_atome"></a><a name="atome"></a><h2>atom.e</h2><ul><li><strong>atom</strong> (built-in)<ul><li><tt>abs</tt>(atom) --&gt; atom
+</li><li><tt>sign</tt>(atom) --&gt; integer
+</li></ul>
+</li></ul>
+<a name="_3_booleane"></a><a name="booleane"></a><h2>boolean.e</h2><ul><li><strong>boolean</strong><ul><li><em>FALSE</em>
+</li><li><em>TRUE</em>
+</li><li><tt>iif</tt>(boolean,object,object) --&gt; object
+</li></ul>
+</li></ul>
+<a name="_4_chare"></a><a name="chare"></a><h2>char.e</h2><ul><li><strong>char</strong><ul><li><tt>lower</tt>(char) --&gt; char
+</li><li><tt>s2</tt>(char) --&gt; char
+</li><li><tt>upper</tt>(char) --&gt; char
+</li></ul>
+</li></ul>
+<a name="_5_clibe"></a><a name="clibe"></a><h2>clib.e</h2><ul><li><strong>clib</strong><ul><li><tt>Clib</tt>({string}) --&gt; clib
+</li></ul>
+</li></ul>
+<a name="_6_cride"></a><a name="cride"></a><h2>crid.e</h2><ul><li><strong>crid</strong><ul><li><tt>Crid</tt>(string,clib,ints,integer) --&gt; crid
+</li><li><tt>fC</tt>(crid,ints) --&gt; integer
+</li><li><tt>vfC</tt>(crid,ints) --&gt; void
+</li></ul>
+</li></ul>
+<a name="_7_creolee"></a><a name="creolee"></a><h2>creole.e</h2><ul><li><strong>object</strong> (built-in)<ul><li><tt>write</tt>(object,integer) --&gt; void
+</li><li><tt>writef</tt>(object,string) --&gt; void
+</li><li><tt>prnt</tt>(object) --&gt; void
+</li></ul>
+</li><li><strong>string</strong><ul><li><tt>display</tt>(string) --&gt; flag
+</li></ul>
+</li></ul>
+<a name="_8_htmle"></a><a name="htmle"></a><h2>html.e</h2><ul><li><strong>object</strong> (built-in)<ul><li><tt>write</tt>(object,integer) --&gt; void
+</li><li><tt>writef</tt>(object,string) --&gt; void
+</li><li><tt>prnt</tt>(object) --&gt; void
+</li></ul>
+</li><li><strong>string</strong><ul><li><tt>display</tt>(string) --&gt; flag
+</li></ul>
+</li></ul>
+<a name="_9_integere"></a><a name="integere"></a><h2>integer.e</h2><ul><li><strong>integer</strong> (built-in)<ul><li><tt>mod</tt>(integer,integer) --&gt; integer
+</li></ul>
+</li></ul>
+<a name="_10_ints"></a><a name="ints"></a><h2>ints</h2><ul><li><strong>ints</strong><ul><li><tt>Ints</tt>(integer,integer,integer) --&gt; ints
+</li></ul>
+</li></ul>
+<a name="_11_io"></a><a name="io"></a><h2>io</h2><ul><li><strong>filehandle</strong><ul><li><tt>flength</tt>(filehandle) --&gt; integer
+</li><li><tt>flines</tt>(filehandle) --&gt; {string}
+</li><li><tt>fread</tt>(filehandle) --&gt; string
+</li><li><tt>fseek</tt>(filehandle,atom) --&gt; boolean
+</li><li><tt>fwhere</tt>(filehandle) --&gt; integer
+</li><li><tt>fwrite</tt>(filehandle,string) --&gt; void
+</li><li><tt>fwrites</tt>(filehandle,{string}) --&gt; sequence
+</li><li><tt>getCh</tt>(filehandle) --&gt; integer
+</li><li><tt>getString</tt>(filehandle) --&gt; string
+</li></ul>
+</li></ul><ul><li><strong>object</strong> (built-in)<ul><li><tt>write</tt>(object) --&gt; void
+</li><li><tt>writef</tt>(object,string) --&gt; void
+</li><li><tt>writefln</tt>(object,string) --&gt; void
+</li><li><tt>writeln</tt>(object) --&gt; void
+</li></ul>
+</li></ul>
+<a name="_12_liste"></a><a name="liste"></a><h2>list.e</h2><ul><li><strong>list</strong><ul><li><tt>product</tt>(list) --&gt; atom
+</li><li><tt>sum</tt>(list) --&gt; atom
+</li></ul>
+</li></ul>
+<a name="_13_sequencee"></a><a name="sequencee"></a><h2>sequence.e</h2><ul><li><strong>sequence</strong> (built-in)<ul><li><tt>add2</tt>(sequence,object,flag) --&gt; sequence
+</li><li><tt>filter</tt>(sequence,string,object) --&gt; sequence
+</li><li><tt>filter_</tt>(sequence,string) --&gt; sequence
+</li><li><tt>FindAll</tt>(sequence,object) --&gt; ints
+</li><li><tt>fold</tt>(sequence,string,object) --&gt; object
+</li><li><tt>head_</tt>(sequence) --&gt; object
+</li><li><tt>init</tt>(sequence) --&gt; sequence
+</li><li><tt>last</tt>(sequence) --&gt; object
+</li><li><tt>map</tt>(sequence,string,object) --&gt; sequence
+</li><li><tt>map_</tt>(sequence,string) --&gt; sequence
+</li><li><tt>reverse</tt>(sequence) --&gt; sequence
+</li><li><tt>tail</tt>(sequence) --&gt; sequence
+</li></ul>
+</li></ul>
+<a name="_14_stringe"></a><a name="stringe"></a><h2>string.e</h2><ul><li><strong>string</strong><ul><li><tt>s2c</tt>(string,integer) --&gt; address
+</li><li><tt>s2i</tt>(string) --&gt; integer
+</li><li><tt>split</tt>(string) --&gt; sequence
+</li><li><tt>startsWith</tt>(string,string) --&gt; boolean
+</li><li><tt>toLower</tt>(string) --&gt; string
+</li><li><tt>toUpper</tt>(string) --&gt; string
+</li><li><tt>trim</tt>(string,flag) --&gt; string
+</li></ul>
+</li></ul>
+<a name="_15_totexte"></a><a name="totexte"></a><h2>totext.e</h2><ul><li><strong>string</strong><ul><li><tt>write</tt>(string,integer) --&gt; void
+</li><li><tt>display</tt>(string) --&gt; flag
+</li></ul>
+</li><li><strong>object</strong> (built-in)<ul><li><tt>writef</tt>(object,string) --&gt; void
+</li></ul>
+</li><li><strong>ints</strong><ul><li><tt>writel</tt>(ints) --&gt; void
+</li></ul>
+</li></ul>
+<a name="_16_warne"></a><a name="warne"></a><h2>warn.e</h2><ul><li><strong>object</strong> (built-in)<ul><li><tt>warn</tt>(object) --&gt; object
+</li></ul>
+</li></ul>
+</body></html>
