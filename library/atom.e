@@ -4,14 +4,13 @@
 --/*
 --
 --= Open Euphoria atom library
---* Version: 4.0.5.0
+--* Version: 4.0.5.1
 --* Author: C A Newbould
---* Date: 2022.01.02
+--* Date: 2022.01.23
 --* Status: incomplete
 --* Changes:
 --** created
---** ##abs## defined
---** ##sign## defined
+--** ##sign## revised
 --
 --==Open Euphoria extension library: atom
 --This library contains tools that apply to the in-built
@@ -29,7 +28,7 @@ include boolean.e -- for 'iif'
     export function abs(atom a) -- (a) -> a
         return iif(a, a, 0-a)
     end function
-    export function sign(atom a) -- (a) -> a
+    export function sign(atom a) -- (a) -> i
         if a = 0 then return 0
         elsif a > 0 then return 1
         else return -1
@@ -38,4 +37,12 @@ include boolean.e -- for 'iif'
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--* Version: 4.0.5.0
+--* Author: C A Newbould
+--* Date: 2022.01.02
+--* Status: incomplete
+--* Changes:
+--** created
+--** ##abs## defined
+--** ##sign## defined
 --------------------------------------------------------------------------------
