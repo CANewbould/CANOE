@@ -3,24 +3,37 @@
 --------------------------------------------------------------------------------
 -- Notes:
 --
---
+-- 
 --------------------------------------------------------------------------------
 --/*
 --= Library: iup.ew
 -- Description: the base library to interface the IUP GUI with OE.
 ------
---[[[Version: 4.0.5.4
+--[[[Version: 4.0.5.6
 --Euphoria Versions: 4.0.5 upwards
 --Author: C A Newbould
---Date: 2022.01.23
+--Date: 2022.01.26
 --Status: complete; operational
 --Changes:]]]
---* ##Destroy## defined
+--* changed dialog function names to lower-case
+--* moved event-handling from //iup.e//
+--* ##flush## defined
 --
 --==OE library: iup
 --
--- This library hold all the widget-based functionality for running IUP
--- in OE.
+-- This library hold all the widget-based functionality for running IUP GUI
+-- appllications with user-defined top-level windows (##dialog##s).
+--
+-- To distinguish the "method" functions which are available to IUP widgets
+-- from those in the system library (//iup.e//) these functions are named using
+-- the camel-case convention.
+--
+-- This convention also applies to the event-handling routines.
+--
+-- All //creator// functions (##Constructor##s) use either the title-case
+-- or the Pascal-case convention, in line with the documentated IUP function
+-- names - less the leading //Iup//. Thus ##Vbox## calls ##IupVbox##, whereas
+-- ##GridBox## calls ##IupGridBox##.
 --
 -- Utilise this support by adding the following statement to the calling
 -- module:
@@ -56,24 +69,24 @@ end function
 export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
     return h >= 0 -- allows for NULL
     end type
-    export function GetAttribute(Ihandle this, string attrib) -- f(h -> [c]) -> [c]
+    export function getAttribute(Ihandle this, string attrib) -- f(h -> [c]) -> [c]
         crid GA = Crid("+IupGetAttribute", IUP, {C_P, C_S}, C_S)
         return peek_string(c_func(GA, {this, s2c(attrib)}))
     end function
-    export function SetAttribute(Ihandle widget, string attrib, string val) -- f(h -> [c] -> [c]) -> v
+    export function setAttribute(Ihandle widget, string attrib, string val) -- f(h -> [c] -> [c]) -> v
         crid SA = Crid("+IupSetAttribute", IUP, {C_H, C_S, C_S})
         return vfC(SA, {widget, s2c(attrib), s2c(val)})
     end function
-    export function SetCallback(Ihandle widget, string action, atom fn) -- f(h -> [c] -> a) -> a
+    export function setCallback(Ihandle widget, string action, atom fn) -- f(h -> [c] -> a) -> a
         crid SC = Crid("+IupSetCallback", IUP, {C_H, C_S, C_I}, C_I)
         return fC(SC, {widget, s2c(action), fn})
     end function
     --void IupSetFloat (Ihandle* ih, const char* name, float value);
-    export function SetFloat(Ihandle widget, string attrib, atom val) -- f(h -> [c] -> a) -> v
+    export function setFloat(Ihandle widget, string attrib, atom val) -- f(h -> [c] -> a) -> v
         crid SF = Crid("+IupSetFloat", IUP, {C_H, C_S, C_I})
         return vfC(SF, {widget, s2c(attrib), val})
     end function
-    export function SetInt(Ihandle widget, string attrib, integer val) -- f(h -> [c] -> i) -> v
+    export function setInt(Ihandle widget, string attrib, integer val) -- f(h -> [c] -> i) -> v
         crid SI = Crid("+IupSetInt", IUP, {C_H, C_S, C_I})
         return vfC(SI, {widget, s2c(attrib), val})
     end function
@@ -117,6 +130,10 @@ export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
 export type container(atom c)
     return Ihandle(c)
     end type
+    export function Frame(Ihandle child) -- f(h) -> h
+        crid F = Crid("+IupFrame", IUP, {C_H}, C_H)
+        return fC(F, {child})
+    end function
     export function Hbox(ints children) -- f([h]) -> h
         crid HB = Crid("+IupHbox", IUP, repeat(C_H, length(children)+1), C_H)
         return fC(HB, children & NULL)
@@ -137,15 +154,15 @@ export type dialog(atom d) -- t(a -> t(h)) -> d
         crid D = Crid("+IupDialog", IUP, {C_H}, C_H)
         return fC(D, {child})
         end function
-    export function Destroy(dialog d) -- f(d) -> i
+    export function destroy(dialog d) -- f(d) -> i
         crid D = Crid("+IupDestroy", IUP, {C_H}, C_I)
         return fC(D, {d})
         end function
-    export function Hide(dialog d) -- f(d) -> i
+    export function hide(dialog d) -- f(d) -> i
         crid H = Crid("+IupHide", IUP, {C_H}, C_I)
         return fC(H, {d})
         end function
-    export function Show(dialog d, ints pos = {}) -- f(d -> [i]) -> i
+    export function show(dialog d, ints pos = {}) -- f(d -> [i]) -> i
         if length(pos) then
             crid SXY = Crid("+IupShowXY", IUP, {C_H, C_I, C_I}, C_I)
             return fC(SXY, {d} & pos)
@@ -154,16 +171,51 @@ export type dialog(atom d) -- t(a -> t(h)) -> d
             return fC(S, {d})
         end if
         end function
-    export function Error(dialog d = NULL, string message) -- f(d -> [c]) -> v
+    export function error(dialog d = NULL, string message) -- f(d -> [c]) -> v
         crid E = Crid("+IupMessageError", IUP, {C_H, C_S})
         return vfC(E, {d, s2c(message)})
     end function
-    export function Alarm(dialog d = NULL, string message, string title, string buttons = "OK") -- f(d -> [c] -> [c] -> [c]) -> i
+    export function alarm(dialog d = NULL, string message, string title, string buttons = "OK") -- f(d -> [c] -> [c] -> [c]) -> i
         crid A = Crid("+IupMessageAlarm", IUP, {C_H, C_S, C_S, C_S}, C_I)
         return fC(A, {d, s2c(title), s2c(message), s2c(buttons)})
     end function
 --------------------------------------------------------------------------------
+--/*
+--=== IUP event-handling
+--*/
+--------------------------------------------------------------------------------
+export function exitLoop() -- f() -> v
+    crid EL = Crid("+IupExitLoop", IUP)
+    return vfC(EL)
+    end function
+--------------------------------------------------------------------------------
+export function flush() -- f() -> v
+    crid EL = Crid("+IupFlush", IUP)
+    return vfC(EL)
+    end function
+--------------------------------------------------------------------------------
+export function mainLoop() -- f() -> v
+    crid ML = Crid("+IupMainLoop", IUP)
+    return vfC(ML)
+    end function
+--------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.5
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.25
+--Status: complete; operational
+--Changes:]]]
+--* ##Frame## defined
+--------------------------------------------------------------------------------
+--[[[Version: 4.0.5.4
+--Euphoria Versions: 4.0.5 upwards
+--Author: C A Newbould
+--Date: 2022.01.23
+--Status: complete; operational
+--Changes:]]]
+--* ##Destroy## defined
 --------------------------------------------------------------------------------
 --[[[Version: 4.0.5.3
 --Euphoria Versions: 4.0.5 upwards
