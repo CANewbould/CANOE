@@ -2,7 +2,7 @@
 
 This project offers a personal view of how Open Euphoria can best be utilised to cover a wide range of programming requirements.
 
-CANOE assumes a version of Open Euphoria not earlier than v4.0.5. Only the Core of that interpreter is used; the contents of the *include* folder are never called upon. Instead, within its *library* folder, CANOE supplies alternative modules organised by Euphoria **types**s and not by functionality (except for elements of the *io* library). A complete OE "system" is thus provided, albeit somewhat incomplete at present.
+CANOE assumes a version of Open Euphoria not earlier than v4.0.5. Only the Core of that interpreter is used; the contents of the *include* folder are never called upon. Instead, within its *library* folder, CANOE supplies alternative modules organised by Euphoria **type**s and not by functionality (except for elements of the *io* library). A complete OE "system" is thus provided, albeit somewhat incomplete at present.
 
 ## Modules
 The top-level folder contains a range of examples to illustrate the ideas within the CANOE approach. The *library* folder contains small and distinct modules which provide the guts of the approach. The principles governing these library modules are:
@@ -43,6 +43,8 @@ In similar vein CANOE also offers two routes to using the tab of a web browser a
 * using *html* code directly, even to the extent of embedding simple *Javascript* code within
 
 These two also use variants of the built-in routines to create the output; the process is surprisingly close to the conventional terminal-based approach, so a new user can quickly make the adaptation.
+
+As an alternative to using a browser tab you can use instead a simple IUP dialog with a WebBrowser widget embedded within, as the output "screen" and largely avoid the use of the Terminal Window as the Standard Output Device.
 
 ## Documentation
 
