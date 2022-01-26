@@ -44,7 +44,7 @@ In similar vein CANOE also offers two routes to using the tab of a web browser a
 
 These two also use variants of the built-in routines to create the output; the process is surprisingly close to the conventional terminal-based approach, so a new user can quickly make the adaptation.
 
-As an alternative to using a browser tab you can use instead a simple IUP dialog with a WebBrowser widget embedded within, as the output "screen" and largely avoid the use of the Terminal Window as the Standard Output Device.
+As an alternative to using a browser tab you can use instead a simple IUP dialog with a WebBrowser widget embedded within, as the output "screen" and largely avoid the use of the Terminal Window as the Standard Output Device. In addition you can use markup code to improve the look of your output and even add a style sheet for yet further elaboration.
 
 ## Documentation
 
