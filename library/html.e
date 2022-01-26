@@ -4,12 +4,12 @@
 --/*
 --
 --= Open Euphoria html library
--- Version: 4.0.5.2
+-- Version: 4.0.5.3
 -- Author: C A Newbould
--- Date: 2022.01.15
+-- Date: 2022.01.26
 -- Status: incomplete
 -- Changes:
---* changed ##display## to accept //IUP//
+--* modified to reflect changes in //iup.ew//
 --
 --==Open Euphoria extension library: html
 --
@@ -72,13 +72,13 @@ export function display(string browser = "firefox") -- ([c]) -> IO
         IUP:Open()
         WB:Open()
             Ihandle wb = WebBrowser()
-            SetAttribute(wb,"EXPAND","YES")
-            SetAttribute(wb, "VALUE","file://" & machine_func(23) & "/test.html")
+            setAttribute(wb,"EXPAND","YES")
+            setAttribute(wb, "VALUE","file://" & machine_func(23) & "/test.html")
             dialog d = Dialog(wb)
-            SetAttribute(d,"TITLE","HTML-based ouput")
-            SetAttribute(d,"SIZE","500x300")
-            Show(d)
-        IUP:MainLoop()
+            setAttribute(d,"TITLE","HTML-based ouput")
+            setAttribute(d,"SIZE","500x300")
+            show(d)
+            mainLoop()
         return IUP:Close()
     else
         return system_exec(browser & " test.html", 0)
@@ -86,6 +86,13 @@ export function display(string browser = "firefox") -- ([c]) -> IO
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.2
+-- Author: C A Newbould
+-- Date: 2022.01.15
+-- Status: incomplete
+-- Changes:
+--* changed ##display## to accept //IUP//
 --------------------------------------------------------------------------------
 -- Version: 4.0.5.1
 -- Author: C A Newbould
