@@ -4,13 +4,12 @@
 --/*
 --
 --= Open Euphoria output library
--- Version: 4.0.5.0
+-- Version: 4.0.5.1
 -- Author: C A Newbould
--- Date: 2022.01.03
+-- Date: 2022.01.26
 -- Status: incomplete
 -- Changes:
---* copied from //creole.e//
---* modified
+--* modified to reflect changes in //iup.ew//
 --
 --==Open Euphoria extension library: output
 --
@@ -73,20 +72,27 @@ include iup.ew -- for IUP widgets
 export function display(string title) -- ([c]) -> IO
     Open()
         Ihandle t = Text()
-        SetAttribute(t, "VALUE", txt)
-        SetAttribute(t, "MULTILINE", "YES")
-        SetAttribute(t, "EXPAND", "YES")
-        SetAttribute(t, "READONLY", "YES")
-        SetAttribute(t, "FONT", "Arial, 14")
+        setAttribute(t, "VALUE", txt)
+        setAttribute(t, "MULTILINE", "YES")
+        setAttribute(t, "EXPAND", "YES")
+        setAttribute(t, "READONLY", "YES")
+        setAttribute(t, "FONT", "Arial, 14")
         Ihandle d = Dialog(t)
-        SetAttribute(d, "SIZE", "HALFxHALF")
-        SetAttribute(d, "TITLE", title)
-        Show(d)
-    MainLoop()
+        setAttribute(d, "SIZE", "HALFxHALF")
+        setAttribute(d, "TITLE", title)
+        show(d)
+        mainLoop()
     Close()
     return VOID
 end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.0.5.0
+-- Author: C A Newbould
+-- Date: 2022.01.03
+-- Status: incomplete
+-- Changes:
+--* copied from //creole.e//
+--* modified
 --------------------------------------------------------------------------------
