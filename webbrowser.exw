@@ -25,29 +25,29 @@ include library/iupwb.ew as WB
 Ihandle hDialog, hToolBar, hUrlEntry, hGoButton, hWebBrowser
 
 function on_go(Ihandle self)
-    SetAttribute(hWebBrowser, "VALUE", GetAttribute(hUrlEntry, "VALUE"))
+    setAttribute(hWebBrowser, "VALUE", getAttribute(hUrlEntry, "VALUE"))
     return DEFAULT
 end function
 
 function on_navigate_cb(Ihandle self)
-    SetAttribute(hUrlEntry, "VALUE", GetAttribute(hWebBrowser, "VALUE"))
+    setAttribute(hUrlEntry, "VALUE", getAttribute(hWebBrowser, "VALUE"))
     return DEFAULT
 end function
 
 function on_completed_cb(Ihandle self)
-    SetAttribute(hUrlEntry, "VALUE", "")--GetAttribute(hWebBrowser, "VALUE"))
+    setAttribute(hUrlEntry, "VALUE", "")--GetAttribute(hWebBrowser, "VALUE"))
     return DEFAULT
 end function
 
 procedure create_gui()
     hUrlEntry = New(Text(),"EXPAND=HORIZONTAL")
     hGoButton = Button("Go")
-    SetCallback(hGoButton,"ACTION",Icallback("on_go"))
+    setCallback(hGoButton,"ACTION",Icallback("on_go"))
     hToolBar = Hbox({hUrlEntry, hGoButton})
 
     hWebBrowser = New(WebBrowser(), "EXPAND=YES")
-    SetCallback(hWebBrowser, "NAVIGATE_CB", Icallback("on_navigate_cb"))
-    SetCallback(hWebBrowser, "COMPLETED_CB", Icallback("on_completed_cb"))
+    setCallback(hWebBrowser, "NAVIGATE_CB", Icallback("on_navigate_cb"))
+    setCallback(hWebBrowser, "COMPLETED_CB", Icallback("on_completed_cb"))
 
     hDialog = New(Dialog(Vbox({hToolBar, hWebBrowser})), "MARGIN=5x5,GAP=5")
     hDialog = New(hDialog,"TITLE=\"Iup Web Browser\",SIZE=800x380")
@@ -57,10 +57,10 @@ procedure main()
     IUP:Open()
     WB:Open()
     create_gui()
-    Show(hDialog)
+    show(hDialog)
     -- Load our initial page
-    SetAttribute(hWebBrowser, "VALUE", "http://openeuphoria.org")
-    MainLoop()
+    setAttribute(hWebBrowser, "VALUE", "http://openeuphoria.org")
+    mainLoop()
     Close()
 end procedure
 
