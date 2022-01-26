@@ -1,13 +1,12 @@
 --------------------------------------------------------------------------------
 -- iup.exw
 --------------------------------------------------------------------------------
--- Version 4.0.5.0
--- Date: 2022.01.01
+-- Version 4.0.5.2
+-- Date: 2022.01.26
 -- Author: C A Newbould
 -- Status: operational
 -- Changes:
---* created
---* fully-documented
+--* modified to reflect name changes in //iup.ew//
 --------------------------------------------------------------------------------
 -- This app tests a basic IUP session, with a top-level window, some widgets
 -- inside some containers, with various attributes set.
@@ -35,26 +34,29 @@ include library/iup.ew -- for IUP widgets
 --* use of leading commas to emphasise continuation of definitions
 --* use of different default actions in widget definitions
 --* calling non-void functions as if they are procedures
+--* use of the two different Alarm functions
 --------------------------------------------------------------------------------
 Open()
     constant b = Button("I can close the App")
-            ,b1 = Button("I call a message-box", "BUTTON_CB")
-            ,b2 = Button("Use GetTest")
+            ,b1 = Button("I call a Dialog-based Alarm", "BUTTON_CB")
+            ,b2 = Button("Use GetText")
+            ,b3 = Button("I call the IUP Alarm function")
             ,lbl = Label("I am a Label")
-            ,v = Vbox({b,b2,lbl})
+            ,v = Vbox({b,b2,New(Frame(b3),"TITLE=\"I am a Frame\""),lbl})
             ,RED = "255 0 0", GREEN = "0 255 0"
-    SetAttribute(b, "FGCOLOR", RED)
-    SetCallback(b, "ACTION",Icallback("b_onClick"))
-    SetCallback(b1, "BUTTON_CB",Icallback("b1_onClick"))
-    SetCallback(b2, "ACTION", Icallback("b2_onClick"))
-    SetAttribute(lbl, "FGCOLOR", GREEN)
-    SetAttribute(lbl, "TIP", "I do nothing")
-    SetAttribute(v, "GAP", "30")
+    setAttribute(b, "FGCOLOR", RED)
+    setCallback(b, "ACTION",Icallback("b_onClick"))
+    setCallback(b1, "BUTTON_CB",Icallback("b1_onClick"))
+    setCallback(b2, "ACTION", Icallback("b2_onClick"))
+    setCallback(b3, "ACTION", Icallback("b3_onClick"))
+    setAttribute(lbl, "FGCOLOR", GREEN)
+    setAttribute(lbl, "TIP", "I do nothing")
+    setAttribute(v, "GAP", "30")
     constant t = New(Toggle("I am a <b>Toggle</b>"), "MARKUP=YES,VALUE=ON")
             ,h = New(Hbox({v, b1, t}), "GAP=20")
             ,d = New(Dialog(h), "DIALOGFRAME=YES,SIZE=400x200,TITLE=Testing")
-    Show(d, {100, 50})
-MainLoop()
+    show(d, {100, 50})
+    mainLoop()
 Close()
 --------------------------------------------------------------------------------
 -- Event handlers
@@ -67,7 +69,7 @@ function b_onClick(Ihandle self)
     return CLOSE
 end function
 function b1_onClick(Ihandle self)
-    integer i = Alarm(d, GetAttribute(d, "SIZE"),
+    integer i = alarm(d, getAttribute(d, "SIZE"),
                         "Testing's SIZE attribute", "OKCANCEL")
     string btn
     switch i do
@@ -83,7 +85,27 @@ function b2_onClick(Ihandle self)
     Message(s[2],"The text you keyed")
     return DEFAULT
 end function
+function b3_onClick(Ihandle self)
+        integer i = Alarm("Message","Title","Button1","Button2")
+        Message(sprintf("You chose Button #%d",i),"IUP Alarm")
+    return DEFAULT
+end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version 4.0.5.1
+-- Date: 2022.01.25
+-- Author: C A Newbould
+-- Status: operational
+-- Changes:
+--* added test of IUP Alarm, via a third button
+--* added a Frame container around this button
+--------------------------------------------------------------------------------
+-- Version 4.0.5.0
+-- Date: 2022.01.01
+-- Author: C A Newbould
+-- Status: operational
+-- Changes:
+--* created
+--* fully-documented
 --------------------------------------------------------------------------------
