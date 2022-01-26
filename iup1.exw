@@ -1,0 +1,30 @@
+--------------------------------------------------------------------------------
+-- iup1.exw
+--------------------------------------------------------------------------------
+-- Version 4.0.5.0
+-- Date: 2022.01.26
+-- Author: C A Newbould
+-- Status: operational
+-- Changes:
+--* created
+--------------------------------------------------------------------------------
+-- This app tests the basic IUP library: no top-level window, or event loop.
+-- It relies solely on the methods in //iup.e//.
+--------------------------------------------------------------------------------
+-- Required files
+--------------------------------------------------------------------------------
+include library/iup.e -- for system methods
+--------------------------------------------------------------------------------
+-- The IUP app --
+--
+-- This tests all the system-level routines
+--------------------------------------------------------------------------------
+?Version()
+Open()
+    Message(sprintf("You are using Version %.2f of IUP",Version()), "IUP")
+    sequence s = GetText("","Key in some text")
+    Alarm(s[2],"Text","Close me!")
+    s = GetFile("")
+    Message("You chose: " & s[2],"File selection")
+Close()
+--------------------------------------------------------------------------------
