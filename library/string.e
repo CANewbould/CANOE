@@ -3,18 +3,17 @@
 --------------------------------------------------------------------------------
 -- Notes
 --
--- Consider s2a function
+-- 
 --------------------------------------------------------------------------------
 --/*
 --
 --= Open Euphoria string library
--- Version: 4.0.5.5
+-- Version: 4.0.5.6
 -- Author: C A Newbould
--- Date: 2022.01.26
+-- Date: 2022.01.27
 -- Status: incomplete
 -- Changes:
---* ##endsWith## defined
---* ##capitalise## defined
+--* ##s2a## defined
 --
 --== Open Euphoria extension library: string
 -- This library contains tools that apply to the **string** type defined here.
@@ -68,6 +67,12 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
         return startsWith(reverse(this),reverse(that))
     end function
     constant NULL = 0
+    export function s2a(string n) -- f([c]) -> a - converts a string "atom" to its digit form
+        integer dp = find('.',n)
+        string dpart
+        if dp then dpart = n[dp+1..$] else return s2i(n) end if
+        return s2i(n[1..dp-1]) + s2i(dpart)/power(10,length(dpart))
+    end function
     export function s2c(string s, integer l = length(s)+1) -- f([c] -> i) -> addr - more general than 'allocate_string'
         atom mem = Address(l)
     	if mem then poke(mem, s & NULL)
@@ -119,6 +124,14 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.0.5.5
+-- Author: C A Newbould
+-- Date: 2022.01.26
+-- Status: incomplete
+-- Changes:
+--* ##endsWith## defined
+--* ##capitalise## defined
+--------------------------------------------------------------------------------
 -- Version: 4.0.5.4
 -- Author: C A Newbould
 -- Date: 2022.01.19
@@ -162,3 +175,11 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
 --* ##toLower## defined
 --* ##toUpper## defined
 --------------------------------------------------------------------------------
+--/*
+?s2a("145")
+?s2a("145.678")
+?s2a("0.1234")
+?s2a("0")
+?s2a("0.0")
+?s2a("-0.000345")
+--*/
