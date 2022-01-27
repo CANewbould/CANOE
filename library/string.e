@@ -8,12 +8,13 @@
 --/*
 --
 --= Open Euphoria string library
--- Version: 4.0.5.4
+-- Version: 4.0.5.5
 -- Author: C A Newbould
--- Date: 2022.01.19
+-- Date: 2022.01.26
 -- Status: incomplete
 -- Changes:
---* ##trim## extended to allow for all white-space characters
+--* ##endsWith## defined
+--* ##capitalise## defined
 --
 --== Open Euphoria extension library: string
 -- This library contains tools that apply to the **string** type defined here.
@@ -60,6 +61,12 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
     end for
     return TRUE
     end type
+    export function capitalise(string this) -- f([c]) -> [c]
+        return prepend(tail(this), upper(head_(this)))
+    end function
+    export function endsWith(string this, string that) -- f([c] -> [c]) -> b - is 'that' the last non-blank part of 'this'
+        return startsWith(reverse(this),reverse(that))
+    end function
     constant NULL = 0
     export function s2c(string s, integer l = length(s)+1) -- f([c] -> i) -> addr - more general than 'allocate_string'
         atom mem = Address(l)
@@ -86,7 +93,7 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
         if length(bit) then ret = append(ret, bit) end if
         return ret
     end function
-    export function startsWith(string this, string that) -- f([c] -> [c]) -> b - is 'that' the first non-blank prt of 'this'
+    export function startsWith(string this, string that) -- f([c] -> [c]) -> b - is 'that' the first non-blank part of 'this'
         string s = trim(this)
         if length(s) >= length(that)
         then
@@ -111,6 +118,13 @@ export type string(sequence this) -- t([o]) -> [c] - sequence of character eleme
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.0.5.4
+-- Author: C A Newbould
+-- Date: 2022.01.19
+-- Status: incomplete
+-- Changes:
+--* ##trim## extended to allow for all white-space characters
 --------------------------------------------------------------------------------
 -- Version: 4.0.5.3
 -- Author: C A Newbould
