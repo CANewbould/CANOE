@@ -90,10 +90,7 @@ end function
     export function findAll(sequence s, object o) -- f([o]->o) -> [i]
         sequence res = EMPTY
         integer n = find(o, s)
-        while n do
-            res &= n
-            n = find(o, s, n+1)
-        end while
+        while n do res &= n n = find(o, s, n+1) end while
         return res
     end function
     export function fold(sequence s, string fn, object start, integer func = routine_id(fn)) -- {o} -> ((o -> o) -> o) -> o
