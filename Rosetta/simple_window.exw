@@ -1,11 +1,11 @@
 -- CANOE/rosetta/simple_window.exw
 
-include ../library/iup.e
-include ../library/iup.ew
+include ../library/iup.e -- for 'Close','Open'
+include ../library/iup.ew -- for widgets and methods
  
 function click_cb(Ihandle self)
     clicks += 1
-    SetAttribute(lbl,"TITLE",sprintf("clicked %d times",{clicks}))
+    setAttribute(lbl,"TITLE",sprintf("clicked %d times",{clicks}))
     return DEFAULT
 end function
  
@@ -13,10 +13,10 @@ Open()
     integer clicks = 0
     constant lbl = Label("There have been no clicks yet")
     constant btn = Button("Click me")
-    SetCallback(btn, "ACTION", Icallback("click_cb"))
+    setCallback(btn, "ACTION", Icallback("click_cb"))
     constant vbox = Vbox({lbl, Hbox({Fill(),btn,Fill()})})
     constant dlg = New(Dialog(vbox),"DIALOGFRAME=YES,MARGIN=10x10, GAP=10, RASTERSIZE=400x0")
-    SetAttribute(dlg, "TITLE", "Simple windowed application")
-    Show(dlg)
-MainLoop()
+    setAttribute(dlg, "TITLE", "Simple windowed application")
+    show(dlg)
+    mainLoop()
 Close()
