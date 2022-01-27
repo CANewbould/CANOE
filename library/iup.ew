@@ -63,7 +63,7 @@ export function Icallback(string name, atom rid = routine_id(name)) -- ([c]) -> 
 end function
 --------------------------------------------------------------------------------
 --/*
---=== IUP widgets
+--=== IUP widgets: types; constructors; methods
 --*/
 --------------------------------------------------------------------------------
 export type Ihandle(atom h) -- t(a) -> h - a 'control' widget
