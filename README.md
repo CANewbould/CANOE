@@ -2,13 +2,13 @@
 
 This project offers a personal view of how Open Euphoria can best be utilised to cover a wide range of programming requirements.
 
-CANOE assumes a version of Open Euphoria not earlier than v4.0.5. Only the Core of that interpreter is used; the contents of the *include* folder are never called upon. Instead, within its *library* folder, CANOE supplies alternative modules organised by Euphoria **type**s and not by functionality (except for elements of the *io* library). A complete OE "system" is thus provided, albeit somewhat incomplete at present.
+CANOE assumes a version of Open Euphoria not earlier than v4.0.5. Only the Core of that interpreter is used; the contents of the *standard* libraries are never called upon. Instead, within its own library modules, CANOE supplies alternative functionality, largely organised by Euphoria **type**s. A complete OE "system" is thus provided, albeit somewhat incomplete at present.
 
 ## Modules
-The top-level folder contains a range of examples to illustrate the ideas within the CANOE approach. The *library* folder contains small and distinct modules which provide the guts of the approach. The principles governing these library modules are:
+The top-level folder contains the distinct modules which provide the guts of the approach. The principles governing these library modules are:
 
-* each module concentrates on a single **type**, or, on the special case of Input/Output
-* routines are defined which operate primarily on that type (ie the first argument is of the specific type)
+* a distinct approach to output is taken: a single set of output routines exists but with the option to display the results in a range of output contexts
+* each module places the primary concentration on a single **type**
 * all routines are cast as **function**s, with void functions substituting for "procedures"
 * in most cases a specific function is defined *declaratively*
 * use is made of OE's default parameter values, both to apply overloading and to shorten code calls
@@ -18,6 +18,8 @@ The top-level folder contains a range of examples to illustrate the ideas within
 * **constants** and **function**s either have local or *export* scope - no use is made of *public* nor of *global*, although that tag is used to signify OE's built-ins in some of the documentation
 * as a result "inheritance" from type to type is implicit not explicit - the user needs to follow through to establish the reasonableness of application
 
+A (growing) range of examples to illustrate the ideas within the CANOE approach are stored in the *demos* folder.
+
 ## Coding
 
 When writing apps or further library modules using the CANOE approach the following considerations should be borne in mind:
@@ -25,26 +27,45 @@ When writing apps or further library modules using the CANOE approach the follow
 * use **expression**s over **variable**s
 * avoid the use of **loop**s
 * avoid dangling **else**s
-* adopt a list-comprehension perspective: eg via **map**s, **filter**s and **fold**s, or by exploiting **sequence** arithmetic
+* adopt a list-comprehension perspective: in CANOE **map**s and **filter**s are both subsumed within the two forms of **fold**; these should be used, whilst also exploiting **sequence** arithmetic
 * consider the optimum Input/Output scenario - see below
-* given the use of *export*, ensure that all necessary modules are *include*d in the calling module
+* given the use of *export*, ensure that all necessary modules are *include*d in a calling module
 
 ## Input/Output
 
-You can use the built-in I/O routines of OE in the normal way when using CANOE. CANOE. however, offers alternatives to this terminal-based platform. The IUP GUI interface affords both the means of collecting user input and displaying output, whether through the predefined dialogues or via purpose-built **dialog**s within the IUP framework.
+You can use the built-in I/O routines of OE in the normal way when using CANOE. CANOE. however, offers a range of universal output functions which differ from the standard Euphoria routines insofar as they all "store" cumulatively rather than output immediately. These routines are:
 
-The project also explores using a pre-set IUP **dialog**, along with a small set of converted built-in routines, as an alternative form of output.
+* write(object o)
+* writef(object 0,sequence format)
+* writeln(object o)
+* writefln(object 0,sequence format)
+* writel(sequence a,sequence format)
 
-(Note that CANOE's version of the IUP wrapper uses the short-form naming convention - all without the leading 'IUP'.)
+When adopting this approach the user can elect to direct the contents of the store to a range of output contexts, which currently are:
 
-In similar vein CANOE also offers two routes to using the tab of a web browser as the Output "device":
+* the standard output screen
+* an IUP web-browser tab
 
-* using *creole*, the markup language currently used for OE documentation, as an intermediary
-* using *html* code directly, even to the extent of embedding simple *Javascript* code within
+or a dialogue using
+* IUP
+* libui, or
+* GTK
 
-These two also use variants of the built-in routines to create the output; the process is surprisingly close to the conventional terminal-based approach, so a new user can quickly make the adaptation.
+A user doesn't need to understand how any of these GUI toolkits work, nor are they required to do any coding. A general-purpose function (**display**) is called, which entitles the output. The output context is controlled using the *with define* keywords followed by a code - one of:
 
-As an alternative to using a browser tab you can use instead a simple IUP dialog with a WebBrowser widget embedded within, as the output "screen" and largely avoid the use of the Terminal Window as the Standard Output Device. In addition you can use markup code to improve the look of your output and even add a style sheet for yet further elaboration.
+* STDOUT (the default)
+* GTK
+* IUP
+* IUPWB
+* UI
+
+(Note that a non-STDOUT option can only be used if the appropriate shared library - as a minimum - and associated wrapper library are present on the calling Operating System.)
+
+It is important to note that the keyword definition must precede the inclusion of the **io** module, in which the writing functions are declared and where the keyword is detected. If the declaration follows the inclusion the default always applies.
+
+Where *IUPWB* is selected the user can add markup code to the written output to improve its look and even add a style sheet for yet further elaboration.
+
+All the examples in the *demos* folder are constructed using this alternative output strategy. Each illustration is thoroughly documented to outline the general strategy. A user can easily re-direct the output of any of these examples by modifying or adding a suitable keyword definition. (Note, however, that the more markup material sent to the web-browser the more editing is necessary to switch output mode.)
 
 ## Documentation
 
