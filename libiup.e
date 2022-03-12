@@ -4,12 +4,12 @@
 --/*
 --
 --= Open Euphoria IUP core library
--- Version: 4.1.0.0
+-- Version: 4.1.0.1
 -- Author: C A Newbould
--- Date: 2022.02.28
+-- Date: 2022.03.12
 -- Status: complete
 -- Changes:
---* created
+--* defined ##getattrib##
 --
 --==Open Euphoria extension library: libiup
 --
@@ -29,6 +29,7 @@ constant
     ,Iattrib = Crid("IupSetAttribute",IUP,{C_P,C_P,C_P})
     ,IText = Crid("IupText",IUP,{},C_P)
     ,Ishow = Crid("IupShow",IUP,{C_P},C_I)
+    ,Igetattrib = Crid("IupGetAttribute",IUP,{C_P,C_P},C_P)
 --------------------------------------------------------------------------------
 --/*
 --===Routines
@@ -62,7 +63,16 @@ include sequence.e
 export procedure attrib(atom a,sequence s,sequence v)
     c_proc(Iattrib,{a,toC(s),toC(v)})
 end procedure
+export function getattrib(atom a,sequence s)
+    return peek_string(c_func(Igetattrib,{a,toC(s)}))
+end function
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.1.0.0
+-- Author: C A Newbould
+-- Date: 2022.02.28
+-- Status: complete
+-- Changes:
+--* created
 --------------------------------------------------------------------------------
