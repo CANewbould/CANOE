@@ -31,7 +31,7 @@
 --*/
 --------------------------------------------------------------------------------
 include boolean.e -- for 'FALSE','TRUE'
-include sequence.e -- for 'init'
+include sequence.e -- for 'init','perform'
 --------------------------------------------------------------------------------
 --/*
 --===Type: filehandle
@@ -44,32 +44,24 @@ export type filehandle(integer i) -- i->i
         return open(s,m)
     end function
     --<eucode>global function close(filehandle f) -- i->void</eucode>
+    function gets_(filehandle f)
+        object o = gets(f)
+        return iif(sequence(o),init(o),o)
+    end function
+    constant EOF=-1
     export function flines(filehandle f) -- i->[[c]]
-        sequence s = {}
-        if f != -1 then
-            object o = gets(f)
-            while sequence(o) do
-                s = append(s,init(o))
-            o = gets(f)
-            end while
-        end if
-        return s
+        return perform("gets_",f,EOF)
     end function
     constant M_FLUSH = 60
     export function flush(filehandle f) --i->b
         machine_proc(M_FLUSH, f)
         return TRUE
     end function
+    function getc_(filehandle f)
+        return getc(f)
+    end function
     export function fread(filehandle f) -- i->[c]
-        sequence s = ""
-        if f != -1 then
-            integer c = getc(f)
-            while c!=-1 do
-                s&=c
-                c = getc(f)
-            end while
-        end if
-        return s
+        return perform("getc_",f,EOF)
     end function
     enum M_SEEK = 19, M_WHERE
     export function fseek(filehandle f,integer i) -- i->i->b

@@ -19,16 +19,16 @@
 --
 --*/
 --------------------------------------------------------------------------------
-include std/dll.e
+include c2e.e
 constant
-    IUP = open_dll("libiup.so")
-    ,IOpen = define_c_func(IUP,"IupOpen",{C_INT,C_POINTER},C_INT)
-    ,IClose = define_c_proc(IUP,"IupClose",{})
-    ,ILoop = define_c_proc(IUP,"IupMainLoop",{})
-    ,IDialog = define_c_func(IUP,"IupDialog",{C_POINTER},C_POINTER)
-    ,Iattrib = define_c_proc(IUP,"IupSetAttribute",{C_POINTER,C_POINTER,C_POINTER})
-    ,IText = define_c_func(IUP,"IupText",{},C_POINTER)
-    ,Ishow = define_c_func(IUP,"IupShow",{C_POINTER},C_INT)
+    IUP = Clib("libiup.so")
+    ,IOpen = Crid("IupOpen",IUP,{C_I,C_P},C_I)
+    ,IClose = Crid("IupClose",IUP,{})
+    ,ILoop = Crid("IupMainLoop",IUP,{})
+    ,IDialog = Crid("IupDialog",IUP,{C_P},C_P)
+    ,Iattrib = Crid("IupSetAttribute",IUP,{C_P,C_P,C_P})
+    ,IText = Crid("IupText",IUP,{},C_P)
+    ,Ishow = Crid("IupShow",IUP,{C_P},C_I)
 --------------------------------------------------------------------------------
 --/*
 --===Routines

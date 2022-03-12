@@ -23,7 +23,7 @@
 --*/
 --------------------------------------------------------------------------------
 include libiup.e
-include std/dll.e
+include c2e.e
 --------------------------------------------------------------------------------
 atom html = open("test.html","w")
 --------------------------------------------------------------------------------
@@ -32,9 +32,9 @@ atom html = open("test.html","w")
 --*/
 --------------------------------------------------------------------------------
 constant
-    IUP_WB = open_dll("libiupweb.so")
-    ,WBO = define_c_proc(IUP_WB, "+IupWebBrowserOpen", {})
-    ,WB = define_c_func(IUP_WB, "+IupWebBrowser", {}, C_POINTER)
+    IUP_WB = Clib("libiupweb.so")
+    ,WBO = Crid("+IupWebBrowserOpen", IUP_WB, {})
+    ,WB = Crid("+IupWebBrowser", IUP_WB, {}, C_P)
 export function out(sequence txt, sequence ti)
     puts(html,txt)
     close(html)
