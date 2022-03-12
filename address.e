@@ -24,10 +24,10 @@
 --===Type: address
 --*/
 --------------------------------------------------------------------------------
-export type address(atom this) -- t(a) -> addr
+export type address(atom this) -- a->addr
     return this >=0
     end type
-    export function Address(atom l)
+    export function Address(atom l) -- a->addr
         return machine_func(16,l)
     end function
 --------------------------------------------------------------------------------

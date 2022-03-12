@@ -1,35 +1,46 @@
 --------------------------------------------------------------------------------
--- Test application: trim.ex
+-- Test application: file.ex
 --------------------------------------------------------------------------------
---Version: 4.1.0.0
---Date: 2022.03.03
+--Version: 4.1.0.1
+--Date: 2022.03.11
 --Author: C A Newbould
 --Status: Complete
 --Changes:
---* copied from previous version
---* added non-default output mode
+--* modified to use ##fread##
+--* extended to check ##fseek## and use ##flines##
+--* added use of ##fwhere## to ascertain length
 --------------------------------------------------------------------------------
--- Define the source
+include file.e -- for 'File','flines','fread','fseek','fwhere'
 --------------------------------------------------------------------------------
-constant s = "\t\t   test   \t"
+-- Carry out process: instantiation;read;length;rewind;read lines;close
 --------------------------------------------------------------------------------
--- Select the output mode
+constant
+    f = File("trim.ex","r")
+    ,TEXT = fread(f)
+    ,LENGTH = fwhere(f)
+    ,REWIND = fseek(f,0)
+    ,LINES = flines(f)
+close(f)
 --------------------------------------------------------------------------------
-with define IUP -- must come before io.e included
+-- Determine output mode
 --------------------------------------------------------------------------------
--- Start output
+with define IUP
 --------------------------------------------------------------------------------
-include io.e -- for 'writefln'
-writefln(s,"original test with white space = '%s'")
+-- Output result
 --------------------------------------------------------------------------------
--- Output results
---------------------------------------------------------------------------------
-include sequence.e -- for 'trim'
-writefln(trim(s,BEGINNING),"trim at beginning = '%s'")
-writefln(trim(s,ENDING),"trim at the end = '%s'")
-writefln(trim(s,BOTH),"trim both = '%s'")
-display("This CANOE app tests the trim function")
+include io.e -- for 'display','writef','writefln','writeln'
+writef(LENGTH,"The file has %d characters")
+writefln(length(LINES)," and %d lines")
+writeln("CONTENTS:")
+writeln(TEXT)
+display("Using the 'file' library functions to inspect the contents of 'trim.ex'")
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+--Version: 4.1.0.0
+--Date: 2022.03.09
+--Author: C A Newbould
+--Status: Complete
+--Changes:
+--* created
 --------------------------------------------------------------------------------

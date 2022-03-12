@@ -11,11 +11,13 @@ writeln("Testing")
 writeln("-------\n")
 writeln("This is line 1")
 writeln("This is line 1 again")
-for i = 2 to 10 do
-    writefln(i,"This is line %d")
-end for
-include ints.e
-sequence l=Ints(7)
+--------------------------------------------------------------------------------
+-- map result
+--------------------------------------------------------------------------------
+include sequence.e -- for 'range'
+writel(range(10,2),"This is line %d\n")
+constant l=range(7)
+writeln("")
 write("Using 'writel' ") writel(l)
 --------------------------------------------------------------------------------
 display("Testing IUP dialog")
