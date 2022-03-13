@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- Test application: simple_window.ex
+--------------------------------------------------------------------------------
+--Version: 4.1.0.0
+--Date: 2022.03.09
+--Author: C A Newbould
+--Status: Complete
+--Changes:
+--* created
+--------------------------------------------------------------------------------
+include libiup.e
+--------------------------------------------------------------------------------
+-- Define callback
+--------------------------------------------------------------------------------
+function click_cb(atom self)
+    clicks += 1
+    attrib(lbl,"TITLE",sprintf("clicked %d times",{clicks}))
+    return DEFAULT
+end function
+--------------------------------------------------------------------------------
+-- Main run
+--------------------------------------------------------------------------------
+Open()
+    integer clicks = 0
+    constant lbl = Label("There have been no clicks yet")
+    constant btn = Button("Click me")
+    setCallback(btn, "ACTION", Icallback("click_cb"))
+    constant vbox = Vbox({lbl, Hbox({Fill(),btn,Fill()})})
+    constant dlg = New(Dialog(vbox),"DIALOGFRAME=YES,MARGIN=10x10, GAP=10, RASTERSIZE=400x0")
+    attrib(dlg, "TITLE", "Simple windowed application")
+    show(dlg)
+    Loop()
+Close()
+--------------------------------------------------------------------------------
+-- Previous versions
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
