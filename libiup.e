@@ -17,6 +17,8 @@
 --* defined ##Vbox##
 --* defined ##setCallback##
 --* defined ##Icallback##
+--* added constants
+--* made ##Close## return sensible value
 --
 --==Open Euphoria extension library: libiup
 --
@@ -26,12 +28,12 @@
 --
 --*/
 --------------------------------------------------------------------------------
-include c2e.e
+include c2e.e -- for 'Clib','Crid'
 constant
     IUP = Clib("libiup.so")
     ,IOpen = Crid("IupOpen",IUP,{C_I,C_P},C_I)
     ,IClose = Crid("IupClose",IUP,{})
-    ,ILoop = Crid("IupMainLoop",IUP,{})
+    ,ILoop = Crid("IupMainLoop",IUP,{},C_I)
     ,IDialog = Crid("IupDialog",IUP,{C_P},C_P)
     ,Iattrib = Crid("IupSetAttribute",IUP,{C_P,C_P,C_P})
     ,INew = Crid("IupSetAttributes",IUP,{C_P,C_P},C_P)
@@ -51,13 +53,14 @@ export function Open()
     return c_func(IOpen,{0,0})
 end function
 --------------------------------------------------------------------------------
-export procedure Close()
+export function Close()
     c_proc(IClose)
-end procedure
+    return IUP_CLOSE
+end function
 --------------------------------------------------------------------------------
-export procedure Loop()
-    c_proc(ILoop)
-end procedure
+export function Loop()
+    return c_func(ILoop)
+end function
 --------------------------------------------------------------------------------
 export function Dialog(atom a)
     return c_func(IDialog,{a})
@@ -99,7 +102,7 @@ export function New(atom a,sequence s)
     return c_func(INew,{a,toC(s)})
 end function
 --------------------------------------------------------------------------------
-include sequence.e
+include sequence.e -- for 'toC'
 export procedure attrib(atom a,sequence s,sequence v)
     c_proc(Iattrib,{a,toC(s),toC(v)})
 end procedure
@@ -107,14 +110,17 @@ export function getattrib(atom a,sequence s)
     return peek_string(c_func(Igetattrib,{a,toC(s)}))
 end function
 --------------------------------------------------------------------------------
-export function setCallback(atom a,sequence s, atom r)
+export function setcallback(atom a,sequence s, atom r)
     return c_func(Isetcallback,{a,toC(s),r})
 end function
 export function Icallback(sequence name, atom rid = routine_id(name))
     return machine_func(52,{'+', rid})
 end function
 --------------------------------------------------------------------------------
-export enum CONTINUE = -4,CLOSE,DEFAULT
+export enum IUP_CONTINUE = -4, IUP_CLOSE, IUP_DEFAULT, IUP_IGNORE
+export enum IUP_OPENED = -1, IUP_NOERROR, IUP_ERROR
+export constant IUP_INVALID = -1
+export constant IUP_INVALID_ID = -10
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
