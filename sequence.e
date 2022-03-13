@@ -4,16 +4,13 @@
 --/*
 --
 --= Open Euphoria sequence library
--- Version: 4.1.0.5
+-- Version: 4.1.0.6
 -- Author: C A Newbould
--- Date: 2022.03.11
+-- Date: 2022.03.13
 -- Status: complete
 -- Changes:
---* soft definition of **string**
---* soft definition of **list**
---* rearranged material accordingly
---* re-defined ##range## recursively
---* generalised ##perform##
+--* added ##startsWith##
+--* added ##endsWith##
 --
 --==Open Euphoria extension library: sequence
 --
@@ -106,6 +103,9 @@ include boolean.e -- for 'boolean','FALSE','iif','TRUE'
 type string(object s)
     return sequence(s)
     end type
+    export function endsWith(string this, string that) -- [c]->[c]->b - is 'that' the last non-blank part of 'this'
+        return startsWith(reverse(this),reverse(that))
+    end function
     function s2(integer x, integer y) -- c->i->i
         return (x-48) + 10*y
     end function
@@ -148,6 +148,14 @@ type string(object s)
         end while
         if length(bit) then ret = append(ret, bit) end if
         return ret
+    end function
+    export function startsWith(string this, string that) -- [c]->[c]->b - is 'that' the first non-blank part of 'this'
+        string s = trim(this)
+        if length(s) >= length(that)
+        then
+            return iif(equal(that,s[1..length(that)]),TRUE,FALSE)
+        else return FALSE
+        end if
     end function
     export function toC(string s) -- [c]->a
         return s2c(s)
@@ -209,6 +217,17 @@ type list(object l)
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.1.0.5
+-- Author: C A Newbould
+-- Date: 2022.03.11
+-- Status: complete
+-- Changes:
+--* soft definition of **string**
+--* soft definition of **list**
+--* rearranged material accordingly
+--* re-defined ##range## recursively
+--* generalised ##perform##
 --------------------------------------------------------------------------------
 -- Version: 4.1.0.4
 -- Author: C A Newbould
