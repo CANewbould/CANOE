@@ -4,13 +4,12 @@
 --/*
 --
 --= Open Euphoria sequence library
--- Version: 4.1.0.6
+-- Version: 4.1.0.7
 -- Author: C A Newbould
--- Date: 2022.03.13
+-- Date: 2022.03.14
 -- Status: complete
 -- Changes:
---* added ##startsWith##
---* added ##endsWith##
+--* added ##map## for convenience
 --
 --==Open Euphoria extension library: sequence
 --
@@ -71,6 +70,13 @@ include boolean.e -- for 'boolean','FALSE','iif','TRUE'
             case 0 then return {}
             case 1 then return call_func(func, {s[1], start})
             case else return call_func(func, {s[$], foldr(s[1..$-1], fn, start, func)})
+        end switch
+    end function
+    export function map(sequence s, sequence fn, integer func = routine_id(fn)) --[o]->(o->o)->[o]
+        switch length(s) do
+            case 0 then return {}
+            case 1 then return {call_func(func, {s[1]})}
+            case else return map(init(s), fn, func) & call_func(func, {s[$]})
         end switch
     end function
     export function reverse(sequence s) -- [o]->[o]
@@ -217,6 +223,14 @@ type list(object l)
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+-- Version: 4.1.0.6
+-- Author: C A Newbould
+-- Date: 2022.03.13
+-- Status: complete
+-- Changes:
+--* added ##startsWith##
+--* added ##endsWith##
 --------------------------------------------------------------------------------
 -- Version: 4.1.0.5
 -- Author: C A Newbould
