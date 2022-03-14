@@ -63,7 +63,7 @@ When writing apps or further library modules using the CANOE approach the follow
 * use **expression**s over **variable**s
 * avoid the use of **loop**s
 * avoid dangling **else**s
-* adopt a list-comprehension perspective: in CANOE **map**s and **filter**s are both subsumed within the two forms of **fold**, although there is a separate version of **filter** provided for convenience; these should be used, whilst also exploiting **sequence** arithmetic
+* adopt a list-comprehension perspective: in CANOE **map**s and **filter**s are both subsumed within the two forms of **fold**, although there is a separate versions of both **filter** and **map** provided for convenience; all of these should be used, whilst also exploiting **sequence** arithmetic
 * consider the optimum Input/Output scenario - see below
 * given the use of *export*, ensure that all necessary modules are *include*d in a calling module
 
