@@ -4,7 +4,7 @@ This project offers a personal view of how Open Euphoria (OE) can best be utilis
 
 CANOE assumes a version of Open Euphoria not earlier than v4.0.5, although, in practice, the development has been made, and tested, using the 64-bit version of OE4.1.0. Only the Core of the Interpreter is assumed; the contents of the *standard* libraries are never called upon. Instead, within its own library modules, CANOE supplies alternative functionality, loosely organised by Euphoria **type**s. A complete OE "system" is thus defined, albeit somewhat incomplete at present.
 
-##Concepts
+## Concepts
 
 This derivation is based upon three notions which, in my view, conceptualise an optimum approach to programming in Euphoria:
 
@@ -14,7 +14,7 @@ This derivation is based upon three notions which, in my view, conceptualise an 
 
 Each is explained further below.
 
-###Scope
+### Scope
 
 The original (RDS) Euphoria offered just *local* and *global* scope. This approach can present problems when trying to develop a modular style of programming because a complete coding solution can "work" perfectly well without any of the associated modules being successfully interpretable.
 
@@ -22,7 +22,7 @@ In producing Open Euphoria the hierarchy of local-export-public-global was devel
 
 Consequently in CANOE I have voted for sole use of the *export* keyword for 'inheritance': you need to include a module explicitly in order to access the functionality in a module.
 
-###IO (but mainly Output)
+### IO (but mainly Output)
 
 The de facto position of OE is that it is a terminal-based language: routines exist for keyboard input and screen output only, with a nominal option for separating results from warnings/errors, but one which, in practice, doesn't work effectively - some would argue that it doesn't work at all!
 
@@ -30,7 +30,7 @@ There is no "built-in", nor native, access to a graphical-user interface (GUI) w
 
 In CANOE I have opted for a unified approach to all forms of output: a single set of output routines, with the option to display the results in a range of output contexts, framed in such a way that a user could add others themselves.
 
-###Expression-processing
+### Expression-processing
 
 Euphoria is classified as a procedural language, but its main mode of usage is as a data-manipulation engine, based on *variables*. I have nothing against this approach, per se, but prefer one which is based upon *expressions*, each of which is manipulated by *functions* into further expressions - essentially a "functional" approach to programming.
 
