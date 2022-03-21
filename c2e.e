@@ -25,7 +25,7 @@
 --===Type: clib
 --*/
 --------------------------------------------------------------------------------
-type clib(atom c)
+export type clib(atom c)
     return c>=0
     end type
     export function Clib(sequence libs) --[[c]]->clib
