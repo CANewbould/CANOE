@@ -4,22 +4,12 @@
 --/*
 --
 --= Open Euphoria file-based library
--- Version: 4.1.0.0
+-- Version: 4.1.0.1
 -- Author: C A Newbould
--- Date: 2022.03.03
+-- Date: 2022.03.28
 -- Status: complete
 -- Changes:
---* created
---* **filehandle** defined
---* ##File## defined
---* ##fread## defined
---* ##fwrite## defined
---* ##fseek## defined
---* ##fwhere## defined
---* ##flush## defined
---* ##getb## defined
---* added documentation entries for the built-ins
---* ##flines## defined
+--* internal function ##gets_## revised
 --
 --==Open Euphoria extension library: file
 --
@@ -46,7 +36,9 @@ export type filehandle(integer i) -- i->i
     --<eucode>global function close(filehandle f) -- i->void</eucode>
     function gets_(filehandle f)
         object o = gets(f)
-        return iif(sequence(o),init(o),o)
+        if atom(o) then return o
+        else return init(o)
+        end if
     end function
     constant EOF=-1
     export function flines(filehandle f) -- i->[[c]]
@@ -95,4 +87,20 @@ export type filehandle(integer i) -- i->i
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
+-- Version: 4.1.0.0
+-- Author: C A Newbould
+-- Date: 2022.03.03
+-- Status: complete
+-- Changes:
+--* created
+--* **filehandle** defined
+--* ##File## defined
+--* ##fread## defined
+--* ##fwrite## defined
+--* ##fseek## defined
+--* ##fwhere## defined
+--* ##flush## defined
+--* ##getb## defined
+--* added documentation entries for the built-ins
+--* ##flines## defined
 --------------------------------------------------------------------------------
