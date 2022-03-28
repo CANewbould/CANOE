@@ -4,13 +4,12 @@
 --/*
 --
 --= Open Euphoria atom library
---* Version: 4.1.0.1
+--* Version: 4.1.0.2
 --* Author: C A Newbould
---* Date: 2022.01.23
+--* Date: 2022.03.28
 --* Status: incomplete
 --* Changes:
---** created
---** ##sign## revised
+--** ##isPositive## added
 --
 --==Open Euphoria extension library: atom
 --This library contains tools that apply to the in-built
@@ -28,6 +27,9 @@ include boolean.e -- for 'iif'
     export function abs(atom a) -- (a) -> a
         return iif(a, a, 0-a)
     end function
+    export function isPositive(atom a) -- (a) -> b
+        return a > 0
+    end function
     export function sign(atom a) -- (a) -> i
         if a = 0 then return 0
         elsif a > 0 then return 1
@@ -36,6 +38,14 @@ include boolean.e -- for 'iif'
     end function
 --------------------------------------------------------------------------------
 -- Previous versions
+--------------------------------------------------------------------------------
+--* Version: 4.1.0.1
+--* Author: C A Newbould
+--* Date: 2022.01.23
+--* Status: incomplete
+--* Changes:
+--** created
+--** ##sign## revised
 --------------------------------------------------------------------------------
 --* Version: 4.0.5.0
 --* Author: C A Newbould
