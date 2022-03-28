@@ -1,0 +1,197 @@
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+ <title></title>
+ <link rel="stylesheet" media="screen, projection, print" type="text/css" href="style.css"/>
+<!-- source="" -->
+</head>
+<body>
+<ol><li>CANOE: Some reflections on functional programming
+</li></ol>
+<p>Functional programming is based on three foundations:</p>
+<ul><li>expressions
+</li><li>functions
+</li><li>lists
+</li></ul>
+<p>Each is described in detail below:</p>
+
+<p> <tt>Expressions</p>
+
+<p> Expressions are invariate values, so in Open Euphoria (OE) are best represented by being assigned to <em>constant</em>s. An expression, however, doesn't always need to be explicitly named, as the essential processing involves the following:</p>
+
+<p> expression1 -&gt; function -&gt; expression2</p>
+
+<p> (potentially) "ad infinitum". In OE this will look like:</p>
+
+<pre class="examplecode"><font color="#0000FF">constant </font><font color="#330033">expression2 = nameoffunction</font><font color="#880033">(</font><font color="#330033">expression1</font><font color="#880033">)</font>
+</pre>
+
+<p> and so expression-assignment can be confined to those instances where the final, or intermediate value needs to be "stored" for further use.</p>
+</tt>Functions</p>
+
+<p> A <tt>function</tt> is a routine which returns a value; so it can be represented by the <tt>function</tt> of OE. An OE <tt>procedure</tt> should always be re-cast into a <tt>function</tt>, even if, in use, the return (expression) value is not necessarily assigned, or even trapped - see below for an example.</p>
+
+<p> <tt>lists</p>
+
+<p> A list is simply a series of connected values. Examples include <em>vectors</em> and <em>matrices</em> in mathematics; <em>strings</em>, <em>paragraphs</em>, etc in texts; <em>tables</em> and <em>draws</em> in sport.</p>
+
+<p> OE offers the <strong>sequence</strong> type which is perfect for storing lists.</p>
+
+<p> #</tt>List processing</p>
+
+<p> Most, if not all, computing tasks can be solved using list-processing. The core list-processing function is a <em>fold</em> where successive elements of a list are processed with regard to all previously-processed elements. Thus a <em>fold</em> must have a <em>starting value</em> to enable the element first being processed to have a point of reference.</p>
+
+<p> Folds can be left-to-right (known as a Right Fold) or right-to-left (Left Fold). Some processes are order-neutral, others not. For example, the sum of all the elements in, say, a vector, with a starting value of <em>0</em> will be the same whether right or left-folded. On the other hand, reversing a list in OE will involve appending elements in a right-fold or prepending in a left-fold.</p>
+
+<p> Strictly speaking a fold is both necessary and sufficient for list-processing, but two other concepts are usefully defined in addition. These are the <tt>map</tt> and the <tt>filter</tt>.</p>
+<ol><li><ol><li><ol><li><ol><li>Map
+</li></ol>
+</li></ol>
+</li></ol>
+</li></ol>
+<p>A <tt>map</tt> is a process whereby the same function is applied to each element of a list in turn, returning an equivalent-length list. It is like:</p>
+
+<p> function(list)</p>
+
+<p> This kind of mapping is already present in a number of OE functions (eg. <tt>remainder</tt>, <tt>sqrt</tt>, <tt>upper</tt>) although it is questionable whether such usage is, in general terms, safe.</p>
+
+<p> In OE, with its powerful offering of <strong>sequence</strong> arithmetic, many mapping operations can be achieved using this approach. For example, the cube of a list can be generated in OE by 'a*a*a'.</p>
+
+<p> In general a map is a fold with the empty sequence as the starting point. To facilitate simpler coding, however, a distinct <tt>map</tt> function is offered.</p>
+<ol><li><ol><li><ol><li><ol><li>Filter
+</li></ol>
+</li></ol>
+</li></ol>
+</li></ol>
+<p>A filter is also a fold with the empty sequence as the starting point. Here, however, the returned list is a subset of the source list, with the function operating the filter defining the condition(s) under which each element qualifies for inclusion in the final list.</p>
+
+<p> A distinct <tt>filter</tt> function is offered in CANOE to enable a value to be passed to the filtering function, thus generalising usage. </p>
+<ol><li><ol><li><ol><li><ol><li>OE definitions
+</li></ol>
+</li></ol>
+</li></ol>
+</li></ol>
+<p>In OE a fold is defined as follows:</p>
+
+<pre class="examplecode"><font color="#0000FF">function </font><font color="#330033">foldr</font><font color="#880033">(</font><font color="#0000FF">sequence </font><font color="#330033">s, </font><font color="#0000FF">sequence </font><font color="#330033">fn, </font><font color="#0000FF">object </font><font color="#330033">st, </font><font color="#0000FF">atom </font><font color="#330033">rid=</font><font color="#0000FF">routine_id</font><font color="#993333">(</font><font color="#330033">fn</font><font color="#993333">)</font><font color="#880033">)</font>
+</pre>
+
+<p> so that a function can be cited using its literal value. For example:</p>
+
+<pre class="examplecode"><font color="#0000FF">constant </font><font color="#330033">sum = foldr</font><font color="#880033">(</font><font color="#330033">range</font><font color="#993333">(</font><font color="#330033">5</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"add"</font><font color="#330033">,0</font><font color="#880033">)</font>
+</pre>
+
+<p> where <tt>add</tt> is defined as:</p>
+
+<pre class="examplecode"><font color="#0000FF">function </font><font color="#330033">add</font><font color="#880033">(</font><font color="#0000FF">atom </font><font color="#330033">a,</font><font color="#0000FF">atom </font><font color="#330033">b</font><font color="#880033">)</font>
+<font color="#0000FF">    return </font><font color="#330033">b+a</font>
+<font color="#0000FF">end function</font>
+</pre>
+
+<p> and <tt>range</tt> is a series-generating integer-list-creator, defined in <em>sequence.e</em>.</p>
+
+<p> The <tt>foldl</tt> function has exactly the same signature, but the "opposite" effect.</p>
+
+<p> To avoid a lot of near-duplication the <em>sequence</em> library offers an extended form of a <tt>filter</tt> function, to enable that degree of generalisation when doing things like "gt" (for (&gt;)). This signature is:</p>
+
+<pre class="examplecode"><font color="#330033">filter</font><font color="#880033">(</font><font color="#0000FF">sequence </font><font color="#330033">s, </font><font color="#0000FF">sequence </font><font color="#330033">fn, </font><font color="#0000FF">object </font><font color="#330033">o, </font><font color="#0000FF">integer </font><font color="#330033">func = </font><font color="#0000FF">routine_id</font><font color="#993333">(</font><font color="#330033">fn</font><font color="#993333">)</font><font color="#880033">)</font>
+</pre>
+
+<p> where the third argument represents the target for the generalised function represented in the second argument. For example:</p>
+
+<pre class="examplecode"><font color="#0000FF">sequence </font><font color="#330033">s = filter</font><font color="#880033">(</font><font color="#330033">range</font><font color="#993333">(</font><font color="#330033">10</font><font color="#993333">)</font><font color="#330033">,</font><font color="#330033">"gt"</font><font color="#330033">,3</font><font color="#880033">) </font><font color="#FF0055">--&gt; range(10,4)</font>
+</pre>
+<ol><li><ol><li><ol><li><ol><li>Definition of folding functions
+</li></ol>
+</li></ol>
+</li></ol>
+</li></ol>
+<p>Each called (named) function applied to a <tt>fold</tt> must take a particular form. It must have two arguments, suitably typed:</p>
+<ul><li>an element in the list
+</li><li>the result of applying the function to any earlier stages (so it must have the same type as the <em>start</em> value)
+</li></ul>
+<p>The function must return the result of applying any specific step and so has also to be of the same type as the <em>start</em> value.</p>
+<ol><li><ol><li><ol><li><ol><li>Definition of filtering functions
+</li></ol>
+</li></ol>
+</li></ol>
+</li></ol>
+<p>This, too, must have two arguments:</p>
+<ul><li>an element in the list
+</li><li>the comparator value
+</li></ul>
+<p>Clearly the second value must be of the same type as each and every element.</p>
+
+<p> The function must return a <strong>boolean</strong> value: whether or not the element meets the condition.</p>
+
+<p> So for the above example:</p>
+
+<pre class="examplecode"><font color="#0000FF">function </font><font color="#330033">gt</font><font color="#880033">(</font><font color="#0000FF">atom </font><font color="#330033">a,</font><font color="#0000FF">atom </font><font color="#330033">b</font><font color="#880033">)</font>
+<font color="#0000FF">    return </font><font color="#330033">a&gt;b</font>
+<font color="#0000FF">end function</font>
+</pre>
+<ol><li><ol><li><ol><li>Using list processing indirectly
+</li></ol>
+</li></ol>
+</li></ol>
+<p>So far the emphasis in this description is on using list processing to obtain results as transformed lists, whether by mapping, selecting or accumulating. Sometimes, however, a list can be used for other purposes.</p>
+
+<p> A case is where, in standard OE, you would use a looping technique to apply a procedure. For example using <tt>puts</tt> or <tt>printf</tt> on each element of a list. You might define a function as follows:</p>
+
+<pre class="examplecode"><font color="#0000FF">function </font><font color="#330033">put</font><font color="#880033">(</font><font color="#0000FF">object </font><font color="#330033">o</font><font color="#880033">)</font>
+<font color="#0000FF">    puts</font><font color="#880033">(</font><font color="#330033">1,o&amp;</font><font color="#330033">'\n'</font><font color="#880033">)</font>
+<font color="#0000FF">    return </font><font color="#330033">TRUE</font>
+<font color="#0000FF">end function</font>
+</pre>
+
+<p> and used as follows:</p>
+
+<pre class="examplecode"><font color="#330033">foldr</font><font color="#880033">(</font><font color="#330033">some_list,</font><font color="#330033">"put"</font><font color="#330033">,TRUE</font><font color="#880033">)</font>
+</pre>
+
+<p> The contents of the list is output, a line at a time, but the result (<em>TRUE</em>) is neither trapped nor of an value! The folding function is simply the device to effect a job!</p>
+<ol><li><ol><li><ol><li>Quasi-infinite lists
+</li></ol>
+</li></ol>
+</li></ol>
+<p>In many computing tasks the contents of a list are known at the outset. In others the content is unknown but the dimensions are. (For example, we can find the length of a file without reading all the contents first.)</p>
+
+<p> Sometimes, however, we have the idea of a list but cannot specify anything about it. Fully-functional languages have a concept of "lazy evaluation" which, among other things, allows one to define an unlimited-length list. OE offers no such devices, although we can easily grow a sequence as a <em>variable</em>!</p>
+
+<p> To return to a previously mentioned case: in standard OE we typically read the contents of a file without pre-determining its length, even though the <tt>fseek</tt> and <tt>fwhere</tt> functions in the <em>file</em> library make this very easy. Instead we might well use a <em>while</em> construct, probably with the <em>entry</em> option, and exit the loop when the end-of-file marker is detected. So it is possible to devise a function, parallel to the folding and filtering ones, to act in such cases, with the signature:</p>
+
+<pre class="examplecode"><font color="#0000FF">function </font><font color="#330033">perform</font><font color="#880033">(</font><font color="#0000FF">sequence </font><font color="#330033">fn,</font><font color="#0000FF">object </font><font color="#330033">args,</font><font color="#0000FF">object </font><font color="#330033">o,</font><font color="#0000FF">atom </font><font color="#330033">rid=</font><font color="#0000FF">routine_id</font><font color="#993333">(</font><font color="#330033">fn</font><font color="#993333">)</font><font color="#880033">)</font>
+</pre>
+
+<p> where the third argument represents the terminating condition. The return value of such a function is a list, so such a function could be classified as a creator/constructor for a list type. This function is provided in CANOE's <em>sequence</em> library.</p>
+
+<p> An example of using this function (bare bones):</p>
+
+<pre class="examplecode"><font color="#FF0055">--------------------------------------------------------------------------------</font>
+<font color="#0000FF">function </font><font color="#330033">getc_</font><font color="#880033">(</font><font color="#0000FF">integer </font><font color="#330033">i</font><font color="#880033">)</font>
+<font color="#0000FF">    return getc</font><font color="#880033">(</font><font color="#330033">i</font><font color="#880033">)</font><font color="#FF0055">-- need an alias as built-in functions don't produce rids</font>
+<font color="#0000FF">end function</font>
+<font color="#FF0055">--------------------------------------------------------------------------------</font>
+<font color="#0000FF">include </font><font color="#330033">sequence.e </font><font color="#FF0055">-- for 'perform'</font>
+<font color="#FF0055">--------------------------------------------------------------------------------</font>
+<font color="#0000FF">constant </font><font color="#330033">f = </font><font color="#0000FF">open</font><font color="#880033">(</font><font color="#330033">"trim.ex"</font><font color="#330033">,</font><font color="#330033">"r"</font><font color="#880033">)</font><font color="#330033">,EOF = -1,C = perform</font><font color="#880033">(</font><font color="#330033">"getc_"</font><font color="#330033">,f,EOF</font><font color="#880033">)</font>
+<font color="#0000FF">close</font><font color="#880033">(</font><font color="#330033">f</font><font color="#880033">)</font>
+<font color="#FF0055">--------------------------------------------------------------------------------</font>
+</pre>
+
+<p> It uses <tt>perform</tt> to do the equivalent of accumulating</p>
+
+<pre class="examplecode"><font color="#0000FF">getc</font><font color="#880033">(</font><font color="#330033">f</font><font color="#880033">)</font>
+</pre>
+
+<p> return values within a loop.</p>
+
+<p> The result is a string sequence containing the full contents of the file.</p>
+
+<p> (NB. You wouldn't do this in practice as <tt>perform</tt> is used to effect the file-reading function <tt>fread</tt> which does the job in one step!)</p>
+</body></html>
