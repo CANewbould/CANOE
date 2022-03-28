@@ -1,1 +1,5 @@
-/test.html
+*.cr
+demos/eu.cfg
+demos/test.html
+ex.err
+test.cr
