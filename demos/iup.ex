@@ -1,23 +1,26 @@
 --------------------------------------------------------------------------------
--- Test application: testio_iupwb.ex
+-- Test application: iup.ex
 --------------------------------------------------------------------------------
-with define IUPWB
+with define IUP
 --------------------------------------------------------------------------------
-include io.e -- for 'writel','writeln'
+include io.e
 --------------------------------------------------------------------------------
 -- some output
 --------------------------------------------------------------------------------
-writeln("<h1>Testing</h1>")
-writeln("<p>This is line 1")
-writeln("<p>This is line 1 <font color=red><big>again</big></font>")
+writeln("Testing")
+writeln("-------\n")
+writeln("This is line 1")
+writeln("This is line 1 again")
 --------------------------------------------------------------------------------
 -- map result
 --------------------------------------------------------------------------------
 include sequence.e -- for 'range'
-write("<p>")
-writel(range(10,2),"This is line <b>%d</b>")
+writel(range(10,2),"This is line %d\n")
+constant l=range(7)
+writeln("")
+write("Using 'writel' ") writel(l)
 --------------------------------------------------------------------------------
-display("Testing IUP WebBrowser")
+display("Testing IUP dialog")
 --------------------------------------------------------------------------------
 -- Previous versions
 --------------------------------------------------------------------------------
