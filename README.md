@@ -72,9 +72,9 @@ When writing apps or further library modules using the CANOE approach the follow
 You can use the built-in I/O routines of OE in the normal way when using CANOE. CANOE, however, offers a range of universal output functions which differ from the standard Euphoria routines insofar as they all "store" cumulatively rather than output immediately. These routines are:
 
 * write(object o)
-* writef(object 0,sequence format)
+* writef(object o,sequence format)
 * writeln(object o)
-* writefln(object 0,sequence format)
+* writefln(object o,sequence format)
 * writel(sequence a,sequence format)
 
 When adopting this approach the user can elect to direct the contents of the store to one of a range of output contexts, which currently are:
